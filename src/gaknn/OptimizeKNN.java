@@ -386,6 +386,8 @@ public class OptimizeKNN {
         
         try 
         {
+        	//o :optimizing the k value and the weight values
+        	//t :training data
             if (m_task.equals("o"))
             {
                 ReadData(m_DataFilePath);
