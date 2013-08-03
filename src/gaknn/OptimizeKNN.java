@@ -361,6 +361,7 @@ public class OptimizeKNN {
                     /* task */
                     m_Mutation = Integer.parseInt(argv[i]);
             }
+            //initial k value
             else if (argv[i].equals("-k")){
                 if (++i >= len || argv[i].startsWith("-")) 
                     Usage("-k must have a valid integer value");
@@ -371,6 +372,7 @@ public class OptimizeKNN {
                         m_FindK = false;
                 }
             }
+            //initial weight values as xml file
             else if (argv[i].equals("-params")){
                 if (++i >= len || argv[i].startsWith("-")) 
                     Usage("-prams must have a valid parameter file");
