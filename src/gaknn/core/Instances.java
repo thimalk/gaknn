@@ -52,6 +52,26 @@ public class Instances {
         m_Capacity = CAPACITY;
     }
     
+    
+    /*
+     * set attribute for csv after header read
+     * 
+     */
+    // set the type this is needed when csv file is reading need to give type after reading values 
+    public void setType(int i,int tp){
+    	
+    	Attribute attr=(Attribute)m_Attributes.elementAt(i);
+    	attr.setType(tp);
+    	m_Attributes.removeElementAt(i);
+    	m_Attributes.insertElementAt(attr, i);
+    }
+    public void setAttributeValues(int i,FastVector attributeValues){
+    	Attribute attr=(Attribute)m_Attributes.elementAt(i);
+    	attr.setValues(attributeValues);
+    	m_Attributes.removeElementAt(i);
+    	m_Attributes.insertElementAt(attr, i);
+    }
+    
     /** Sets the weight vector of the attributes
      *
      * @param weights for the attributes.
