@@ -11,6 +11,7 @@ import gaknn.core.Instances;
 import gaknn.core.InvalidClassIndexException;
 import gaknn.core.Pair;
 import gaknn.dataaccess.ArffFileReader;
+import gaknn.dataaccess.CsvFileReader;
 import gaknn.dataaccess.ParameterReader;
 import gaknn.dataaccess.ParameterWriter;
 import gaknn.datapreprocess.BasicValueHandler;
@@ -381,34 +382,54 @@ public class OptimizeKNN {
     }
     
     public static void main(String[] args) {
-        // TODO code application logic here
-        ParseArguments(args);
-        
-        try 
-        {
-        	//o :optimizing the k value and the weight values
-        	//t :training data
-            if (m_task.equals("o"))
-            {
-                ReadData(m_DataFilePath);
-                createTrainingdataSets();
-                runOptimization();
-            }
-            else
-            {
-                ReadData(m_DataFilePath);
-                double[][] testSet = ReadTestData(m_TestFilePath);
-                Pair[] predictions = PredictInstances(testSet);
+//        // TODO code application logic here
+//        ParseArguments(args);
+//        
+//        try 
+//        {
+//        	//o :optimizing the k value and the weight values
+//        	//t :training data
+//            if (m_task.equals("o"))
+//            {
+//                ReadData(m_DataFilePath);
+//                createTrainingdataSets();
+//                runOptimization();
+//            }
+//            else
+//            {
+//                ReadData(m_DataFilePath);
+//                double[][] testSet = ReadTestData(m_TestFilePath);
+//                Pair[] predictions = PredictInstances(testSet);
+//
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            //e.getMessage();
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//             
+//        }
+    	System.out.println("----------------");
+    	CsvFileReader csv=new CsvFileReader("t.csv");
+    	 csv.SetValueHandler(new BasicValueHandler());
+    	try {
+			csv.ReadHeader();
+			 //dataFileReader.setSelectedAttributes(attr);
+            csv.SetClassIndex(0);
+            csv.CreateDataSet();
+            csv.LoadData();
 
-            }
-        }
-        catch (Exception e)
-        {
-            //e.getMessage();
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-             
-        }
+            m_Data = csv.GetData();
+            m_Data.Compact();
+           // m_Data.Compact();
+            System .out.println("size       "+m_Data.Size());
+			System.out.println(csv.m_RelationName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error"+e);
+			e.printStackTrace();
+		}
         
     }
        
