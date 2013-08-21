@@ -7,13 +7,17 @@ import java.io.IOException;
 
 public class DataFileWriter {
 	 /** the actual data */
-    protected Instances m_Data;
+    protected Pairs [] predictions;
     
     protected String m_filePath;
     
     public String m_RelationName;
     
     public FastVector m_Attributes;
+    
+    public void getAttributes(FastVector a_attributes){
+    	m_Attributes=a_attributes;
+    }
 
 
 }
