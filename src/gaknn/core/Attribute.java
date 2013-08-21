@@ -165,6 +165,14 @@ implements Copyable {
         m_ClassAttribute = false;
         m_Selected = true;
       }
+      // for csv to set type of attribute after get actual values
+      public void setType(int tp){
+    	  m_Type=tp;
+      }
+      // set nominal values for attribute after get the values
+      public void setValues(FastVector attributeValues){
+    	  m_Values=attributeValues;
+      }
       
    /** Retrns the index of value of the nominal attribute
    *
