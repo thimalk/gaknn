@@ -11,7 +11,6 @@ import gaknn.core.Instances;
 import gaknn.core.InvalidClassIndexException;
 import gaknn.core.Pair;
 import gaknn.dataaccess.ArffFileReader;
-import gaknn.dataaccess.CsvFileReader;
 import gaknn.dataaccess.ParameterReader;
 import gaknn.dataaccess.ParameterWriter;
 import gaknn.datapreprocess.BasicValueHandler;
@@ -49,6 +48,10 @@ public class OptimizeKNN {
     private static Instance[] m_TestSet;
     private static FastVector m_Attributes;
     private static Instances m_Data;
+    
+    // to get the class name
+    private static String m_className;
+    
     private static int k = 5;
     
     private static Instances m_TData;
@@ -177,7 +180,9 @@ public class OptimizeKNN {
             m_Data.Compact();
             System .out.println("size       "+m_Data.Size());
             //m_Data.Normalize();
-
+            
+            //get class name
+            m_className=m_Data.Attribute(m_ClassAttribIndex).Name();
             m_Data.SetClassProperties();
 
             m_Attributes = m_Data.Attributes();
@@ -382,55 +387,35 @@ public class OptimizeKNN {
     }
     
     public static void main(String[] args) {
-//        // TODO code application logic here
-//        ParseArguments(args);
-//        
-//        try 
-//        {
-//        	//o :optimizing the k value and the weight values
-//        	//t :training data
-//            if (m_task.equals("o"))
-//            {
-//                ReadData(m_DataFilePath);
-//                createTrainingdataSets();
-//                runOptimization();
-//            }
-//            else
-//            {
-//                ReadData(m_DataFilePath);
-//                double[][] testSet = ReadTestData(m_TestFilePath);
-//                Pair[] predictions = PredictInstances(testSet);
-//
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            //e.getMessage();
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//             
-//        }
-    	System.out.println("----------------");
-    	CsvFileReader csv=new CsvFileReader("t.csv");
-    	 csv.SetValueHandler(new BasicValueHandler());
-    	try {
-			csv.ReadHeader();
-			 //dataFileReader.setSelectedAttributes(attr);
-            csv.SetClassIndex(0);
-            csv.CreateDataSet();
-            csv.LoadData();
-
-            m_Data = csv.GetData();
-            m_Data.Compact();
-           // m_Data.Compact();
-            System .out.println("size       "+m_Data.Size());
-			System.out.println(csv.m_RelationName);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("error"+e);
-			e.printStackTrace();
-		}
+        // TODO code application logic here
+        ParseArguments(args);
         
+        try 
+        {
+        	//o :optimizing the k value and the weight values
+        	//t :training data
+            if (m_task.equals("o"))
+            {
+                ReadData(m_DataFilePath);
+                createTrainingdataSets();
+                runOptimization();
+            }
+            else
+            {
+                ReadData(m_DataFilePath);
+                double[][] testSet = ReadTestData(m_TestFilePath);
+                Pair[] predictions = PredictInstances(testSet);
+
+            }
+        }
+        catch (Exception e)
+        {
+            //e.getMessage();
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+             
+        }
+    
     }
        
 }
