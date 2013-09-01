@@ -348,6 +348,7 @@ implements Copyable, Serializable{
 
     m_Size--;
   }
+  
 
   /**
    * Removes all components from this vector and sets its 

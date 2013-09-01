@@ -229,7 +229,7 @@ public class CsvFileReader extends DataFileReader {
 							}
 						
 						//put the type date into the attribute
-						if (getType.get(i)) {
+						if (!getType.get(i)) {
 							m_Data.setType(i, Attribute.DATE);
 							getType.set(i, true);
 						}
@@ -239,10 +239,18 @@ public class CsvFileReader extends DataFileReader {
 						
 						if (bMissingValue)
 							instanceValues[i] = Double.MAX_VALUE;
-						else
-							instanceValues[i] = m_ValueHandler.GetValue(Attribute.STRING, i, m_Tokenizer.sval);
+						else{
+							Attribute attr=(Attribute)m_Attributes.elementAt(i);
+							
+							if(attr.getValues()==null||attr.IndexOfValue(m_Tokenizer.sval)==-1){
+								attr.addValue(m_Tokenizer.sval);
+								m_Attributes.removeElementAt(i);
+								m_Attributes.insertElementAt(attr, i);
+							}
+							instanceValues[i] = m_ValueHandler.GetValue(Attribute.NOMINAL, i, m_Tokenizer.sval);
+						}
 						//put type nominal into the attribute
-						if (getType.get(i)) {
+						if (!getType.get(i)) {
 							m_Data.setType(i, Attribute.NOMINAL);
 							getType.set(i, true);
 						}
