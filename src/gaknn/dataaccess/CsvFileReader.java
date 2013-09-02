@@ -163,7 +163,7 @@ public class CsvFileReader extends DataFileReader {
 
 	@Override
 	protected Instance ReadInstance() throws IOException {
-		double[] instanceValues = new double[m_Data.NumAllAttributes()];
+		double[] instanceValues = new double[m_Data.NumAttributes()];
 		int index = 0;
 		int classIndex = 0;
 		int numIndex = 0;
@@ -237,9 +237,7 @@ public class CsvFileReader extends DataFileReader {
 						// check for nominal values
 					} else {
 						
-						if (bMissingValue)
-							instanceValues[i] = Double.MAX_VALUE;
-						else{
+						
 							Attribute attr=(Attribute)m_Attributes.elementAt(i);
 							
 							if(attr.getValues()==null||attr.IndexOfValue(m_Tokenizer.sval)==-1){
@@ -247,8 +245,27 @@ public class CsvFileReader extends DataFileReader {
 								m_Attributes.removeElementAt(i);
 								m_Attributes.insertElementAt(attr, i);
 							}
-							instanceValues[i] = m_ValueHandler.GetValue(Attribute.NOMINAL, i, m_Tokenizer.sval);
-						}
+							if (bMissingValue)
+		                        index = -1;
+		                    else
+		                        // Check if value appears in header.
+		                        index = m_Data.Attribute(i).IndexOfValue(m_Tokenizer.sval);
+
+		                    if (m_Data.Attribute(i).IsClassAttribute())
+		                    {
+		                        m_Data.SetClassIndex(i);
+		                        classIndex = index;
+		                    }
+		                    else
+		                    {
+		                        if (bMissingValue)
+		                            instanceValues[i] = m_ValueHandler.GetMissingValue(Attribute.NOMINAL, i); 
+		                        else
+		                            instanceValues[i] = m_ValueHandler.GetValue(Attribute.NOMINAL, i, m_Tokenizer.sval);
+		                       
+		                    }
+							
+						
 						//put type nominal into the attribute
 						if (!getType.get(i)) {
 							m_Data.setType(i, Attribute.NOMINAL);
