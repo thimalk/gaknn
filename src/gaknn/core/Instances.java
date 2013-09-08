@@ -45,6 +45,9 @@ public class Instances {
         m_RelationName = name;
         m_ClassIndex = -1;
         m_Attributes = attInfo;
+        
+        //initialize the m_instances
+        m_Instances=new FastVector();
 
         for (int i=0; i<attInfo.size(); i++ )
         {
@@ -241,6 +244,10 @@ public class Instances {
         if (m_NumAttributes > 0) m_DataSet[RecNo] = values;
         m_ClassIdList[RecNo] = classIndex;
         m_Lines++;
+        
+        // set the m_instances
+        Instance ins=new Instance(values);
+       add(ins);
     }
     
     
