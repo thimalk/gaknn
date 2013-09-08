@@ -1,5 +1,11 @@
 package gaknn.core;
 
+
+
+
+
+//import Instance;
+
 /**
  * Instances class represents the data.
  *
@@ -39,6 +45,9 @@ public class Instances {
         m_RelationName = name;
         m_ClassIndex = -1;
         m_Attributes = attInfo;
+        
+        //initialize the m_instances
+        m_Instances=new FastVector();
 
         for (int i=0; i<attInfo.size(); i++ )
         {
@@ -50,6 +59,56 @@ public class Instances {
         if (m_NumAttributes > 0) m_DataSet = new double[CAPACITY][m_NumAttributes];
         m_ClassIdList = new int[CAPACITY];
         m_Capacity = CAPACITY;
+    }
+    
+    /**
+     * Constructor creating an empty set of instances. Copies references to the
+     * header information from the given set of instances. Sets the capacity of
+     * the set of instances to 0 if its negative.
+     * 
+     * @param dataset the instances from which the header information is to be
+     *          taken
+     * @param capacity the capacity of the new dataset
+     */
+    //@author thimal
+    public Instances(/* @non_null@ */Instances dataset, int capacity) {
+      initialize(dataset, capacity);
+    }
+
+    /**
+     * initializes with the header information of the given dataset and sets the
+     * capacity of the set of instances.
+     * 
+     * @param dataset the dataset to use as template
+     * @param capacity the number of rows to reserve
+     */
+    //@author thimal
+    protected void initialize(Instances dataset, int capacity) {
+      if (capacity < 0)
+        capacity = 0;
+
+      // Strings only have to be "shallow" copied because
+      // they can't be modified.
+      m_ClassIndex = dataset.m_ClassIndex;
+      m_RelationName = dataset.m_RelationName;
+      m_Attributes = dataset.m_Attributes;
+      m_Instances = new FastVector(capacity);
+    }
+    /**
+     * Adds one instance to the end of the set. Shallow copies instance before it
+     * is added. Increases the size of the dataset if it is not large enough. Does
+     * not check if the instance is compatible with the dataset. Note: String or
+     * relational values are not transferred.
+     * 
+     * @param instance the instance to be added
+     */
+    //thimal
+    public void add(/* @non_null@ */Instance instance) {
+
+      Instance newInstance = (Instance) instance.copy();
+
+      newInstance.setDataset(this);
+      m_Instances.addElement(newInstance);
     }
     
     /** Sets the weight vector of the attributes
@@ -185,6 +244,10 @@ public class Instances {
         if (m_NumAttributes > 0) m_DataSet[RecNo] = values;
         m_ClassIdList[RecNo] = classIndex;
         m_Lines++;
+        
+        // set the m_instances
+        Instance ins=new Instance(values);
+       add(ins);
     }
     
     
@@ -224,6 +287,20 @@ public class Instances {
         if (preserveLength > 0)
             System.arraycopy (oldArray,0,newArray,0,preserveLength);
         return newArray; 
+    }
+    
+    /**
+     * Returns the instance at the given position.
+     * 
+     * @param index the instance's index (index starts with 0)
+     * @return the instance at the given position
+     */
+    // @ requires 0 <= index;
+    // @ requires index < numInstances();
+    // @ author thimal
+    public/* @non_null pure@ */Instance instance(int index) {
+
+      return (Instance) m_Instances.elementAt(index);
     }
 
   
