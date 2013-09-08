@@ -9,11 +9,11 @@ import gaknn.similarity.AbstractSimilarity;
 public class PredictorKdtree extends Predictor {
 	KDTree kdTree;
 
-	public PredictorKdtree(AbstractSimilarity sim, Instance[] trSet, Instances inst) {
+	public PredictorKdtree(AbstractSimilarity sim, Instance[] trSet, Instances inst,double[] weights) {
 		super(sim, trSet);
 		kdTree=new KDTree(inst);
+		kdTree.SetWeights(weights);
 		try {
-			System.out.println("11 "+inst.Size());
 			kdTree.setInstances(inst);
 			
 		} catch (Exception e) {

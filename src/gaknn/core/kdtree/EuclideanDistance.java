@@ -96,8 +96,9 @@ public class EuclideanDistance
    * 
    * @param data 	the instances the distance function should work on
    */
-  public EuclideanDistance(Instances data) {
+  public EuclideanDistance(Instances data,double[] weights) {
     super(data);
+    m_Weights=weights;
   }
 
   /**

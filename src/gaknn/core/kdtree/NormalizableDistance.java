@@ -73,6 +73,10 @@ public abstract class NormalizableDistance
   /**
    * Invalidates the distance function, Instances must be still set.
    */
+  /** Keep the weight elements. */
+  //@author thimal
+  static double[] m_Weights;
+  
   public NormalizableDistance() {
     invalidate();
   }
@@ -220,6 +224,15 @@ public abstract class NormalizableDistance
   public void setAttributeIndices(String value) {
     m_AttributeIndices.setRanges(value);
     invalidate();
+  }
+  /**
+   * set the weights 
+   * 
+   * @param double array of weights
+   */
+  //@author thimal
+  public void SetWeights(double[] weights){
+      m_Weights = weights;
   }
   
   /**
@@ -456,8 +469,7 @@ public abstract class NormalizableDistance
       }
       if (stats != null)
 	stats.incrCoordCount();
-      
-      distance = updateDistance(distance, diff);
+      distance = updateDistance(distance, m_Weights[firstI]*diff);
       if (distance > cutOffValue)
         return Double.POSITIVE_INFINITY;
     }

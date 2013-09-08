@@ -149,7 +149,10 @@ public class KDTree
   
   /** The index of WIDTH (MAX-MIN) value in attributes' range array. */
   public static final int WIDTH = EuclideanDistance.R_WIDTH;
-
+  
+  /** keep the weights. */
+  //@author thimal
+  protected static double[] m_Weights;
  
 
   /**
@@ -189,7 +192,7 @@ public class KDTree
     checkMissing(instances);
     if (m_EuclideanDistance == null)
       m_DistanceFunction = m_EuclideanDistance = new EuclideanDistance(
-          instances);
+          instances,m_Weights);
     else
       m_EuclideanDistance.setInstances(instances);
 
@@ -1137,6 +1140,13 @@ public class KDTree
    */
   public void setNodeSplitter(KDTreeNodeSplitter splitter) {
     m_Splitter = splitter;
+  }
+  
+  /** set the weights
+   * @param get double array of weights. */
+  public void SetWeights(double[] weights){
+      m_Weights = weights;
+      m_EuclideanDistance.SetWeights(weights);
   }
 
   /**
