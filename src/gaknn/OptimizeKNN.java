@@ -48,6 +48,10 @@ public class OptimizeKNN {
     private static Instance[] m_TestSet;
     private static FastVector m_Attributes;
     private static Instances m_Data;
+    
+    // to get the class name
+    private static String m_className;
+    
     private static int k = 5;
     
     private static Instances m_TData;
@@ -176,7 +180,9 @@ public class OptimizeKNN {
             m_Data.Compact();
             System .out.println("size       "+m_Data.Size());
             //m_Data.Normalize();
-
+            
+            //get class name
+            m_className=m_Data.Attribute(m_ClassAttribIndex).Name();
             m_Data.SetClassProperties();
 
             m_Attributes = m_Data.Attributes();
@@ -411,7 +417,7 @@ public class OptimizeKNN {
             e.printStackTrace();
              
         }
-        
+    
     }
        
 }
