@@ -58,6 +58,7 @@ public class Instances {
      * 
      */
     // set the type this is needed when csv file is reading need to give type after reading values 
+    //@author thimal
     public void setType(int i,int tp){
     	
     	Attribute attr=(Attribute)m_Attributes.elementAt(i);
