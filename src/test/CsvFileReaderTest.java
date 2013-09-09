@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import gaknn.core.Attribute;
 import gaknn.core.FastVector;
+import gaknn.core.Instance;
 import gaknn.dataaccess.CsvFileReader;
 
 import org.junit.Before;
@@ -37,5 +38,6 @@ public class CsvFileReaderTest {
 		
 		//fail("Not yet implemented");
 	}
-
+	
+	
 }
