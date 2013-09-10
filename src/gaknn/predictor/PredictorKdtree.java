@@ -28,7 +28,7 @@ public class PredictorKdtree extends Predictor {
 	   *  find the k nearest neighbors from kd tree and find the vote for each class value and return the majority class value confidence. */
 	@Override
 	public double Predict(Instance instance) {
-		Instances kNeighbours=new Instances(null, m_K);
+		Instances kNeighbours=null;
 		// TODO Auto-generated method stub
 		double[] vote = new double[m_ClassList.length];
 		int ClassIndex = 0;
@@ -36,8 +36,7 @@ public class PredictorKdtree extends Predictor {
 		//  get the k nearest neighbors form kd tree in a form of instances
 			kNeighbours=kdTree.kNearestNeighbours(instance, m_K);
 			 for (int i=0; i<m_K; i++){
-		            int index = kNeighbours.GetClassIndex();
-		            ClassIndex = trainSet[index].GetClassIndex();
+		            ClassIndex= kNeighbours.instance(i).GetClassIndex();
 		            vote[ClassIndex]+= 1;
 		        }
 			
@@ -47,17 +46,11 @@ public class PredictorKdtree extends Predictor {
 			e.printStackTrace();
 		}
 		 
-			// for each k neighbors find class index and find its votes if one class value is present add 1 vote to that value
-		        for (int i=0; i<m_K; i++){
-		            int index = kNeighbours.GetClassIndex();
-		            ClassIndex = trainSet[index].GetClassIndex();
-		            vote[ClassIndex]+= 1;
-		        }
+		       
 		        
 		        // get class value of the given instance and find its confidence with k nearest neighbor
 		        int clsId = (int)instance.GetClassIndex();
 		        double val = CalculateClassConf(vote,clsId);
-			     
 		        if (val < Double.MIN_VALUE)
 		            val = 0.0;
 		        else if (val > Double.MAX_VALUE)
@@ -83,8 +76,7 @@ public class PredictorKdtree extends Predictor {
 			//  get the k nearest neighbors form kd tree in a form of instances
 			Instances kNeighbours=kdTree.kNearestNeighbours(inst, m_K);
 			 for (int i=0; i<m_K; i++){
-		            int index = kNeighbours.GetClassIndex();
-		            ClassIndex = trainSet[index].GetClassIndex();
+				 ClassIndex = kNeighbours.instance(i).GetClassIndex();
 		            vote[ClassIndex]+= 1;
 		        }
 			
@@ -95,7 +87,6 @@ public class PredictorKdtree extends Predictor {
 		}
 		 
 		        // for each k neighbors find class index and find its votes if one class value is present add 1 vote to that value
-		       
 		        // find the largest vote and its index
 		        int clsIndex = 0;
 		        for (int i=1; i<m_ClassList.length; i++){
@@ -105,7 +96,7 @@ public class PredictorKdtree extends Predictor {
 		        // find confidence of the majority vote
 		        double confidence = CalculateClassConf(vote,clsIndex);
 		        
-		        
+		        System.out.println("ggg"+clsIndex+" "+confidence);
 		        return new Pair(clsIndex, confidence);
 		
 	}
