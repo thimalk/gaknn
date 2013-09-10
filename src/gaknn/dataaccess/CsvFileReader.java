@@ -11,17 +11,23 @@ import java.io.StreamTokenizer;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * represent the class to get input from csv file
+ *
+ *@author Thimal Kempitiya
+ */
 public class CsvFileReader extends DataFileReader {
-	// file extention
+	/**
+	 * keep the file extension
+	 */
 	public static String FILE_EXTENSION = "csv";
 
 	/** Constant set for for missing values */
 	public static char MISSING_VALUE = '?';
 
-	
-
+	/** keep wheather the type of each attribute is find or not */
 	public ArrayList<Boolean> getType = new ArrayList<Boolean>();
+	/** StreamTokenizer to divide the file values  */
 	StreamTokenizer m_Tokenizer;
 
 	public CsvFileReader(String sDataFile) {
@@ -30,7 +36,7 @@ public class CsvFileReader extends DataFileReader {
 
 	}
 
-	// initializing the streamTokenizer
+	/** initializing the streamTokenizer*/
 	protected void initTokenizer() {
 		m_Tokenizer.resetSyntax();
 		m_Tokenizer.whitespaceChars(0, ' ');
@@ -39,7 +45,8 @@ public class CsvFileReader extends DataFileReader {
 
 		m_Tokenizer.eolIsSignificant(true);
 	}
-
+	
+	/** extract the first token from file*/
 	protected void getFirstToken() throws IOException {
 		while (m_Tokenizer.nextToken() == StreamTokenizer.TT_EOL) {
 		}
@@ -56,6 +63,7 @@ public class CsvFileReader extends DataFileReader {
 			m_Tokenizer.ttype = '?';
 	}
 
+	/** extract next token from file*/
 	protected void getNextToken() throws IOException {
 		
 		if (m_Tokenizer.nextToken() == StreamTokenizer.TT_EOF) {
@@ -79,6 +87,8 @@ public class CsvFileReader extends DataFileReader {
 		}
 	}
 
+	/** throw the expection with custom message
+	 * @param String message*/
 	private void errorMessage(String msg) throws IOException {
 		String str = msg + ", read " + m_Tokenizer.toString();
 		if (m_Lines > 0) {
@@ -88,20 +98,24 @@ public class CsvFileReader extends DataFileReader {
 		throw new IOException(str);
 	}
 
+	/** get last token of file
+	 * @param boolean whether to consider EOF or not */
 	protected void getLastToken(boolean endOfFileOk) throws IOException {
 		if ((m_Tokenizer.nextToken() != StreamTokenizer.TT_EOL)
 				&& ((m_Tokenizer.ttype != StreamTokenizer.TT_EOF) || !endOfFileOk)) {
 			errorMessage("end of line expected");
 		}
 	}
-
+	/** read until EOL find */
 	protected void readTillEOL() throws IOException {
 		while (m_Tokenizer.nextToken() != StreamTokenizer.TT_EOL) {
 		}
 		;
 		m_Tokenizer.pushBack();
 	}
-	/** method to read header read the first line of the csv file and read the attribure names */
+	/** method to read header read the first line of 
+	 * the csv file and read the attribure names.
+	 * */
 	public void ReadHeader() throws IOException {
 
 		if (m_filePath.length() == 0) {
@@ -152,7 +166,11 @@ public class CsvFileReader extends DataFileReader {
 			m_Attributes = attributes;
 		}
 	}
-	/** check whether the string is a date standard date need to be in this format dd/mm/yyyy check the length of the string and the '/' chars   */
+	/** check whether the string is a date standard date need to be in this format dd/mm/yyyy 
+	 * check the length of the string and the '/' chars.
+	 * @param String string to check date format
+	 * @return boolean true date format false not
+	 * */
 	private boolean isDate(String astring) {
 		if (astring.length() > 9 && astring.charAt(2) == '/'
 				&& astring.charAt(5) == '/')
@@ -160,6 +178,8 @@ public class CsvFileReader extends DataFileReader {
 		else
 			return false;
 	}
+	/** read each instance
+	 * @return Instance instance keep the values*/
 
 	@Override
 	protected Instance ReadInstance() throws IOException {

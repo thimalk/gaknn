@@ -21,9 +21,6 @@
  */
 
 package gaknn.core.kdtree;
-
-
-//import weka.core.neighboursearch.PerformanceStats;
 import gaknn.core.Instances;
 import gaknn.core.Instance;
 

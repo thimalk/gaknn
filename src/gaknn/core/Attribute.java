@@ -168,18 +168,17 @@ implements Copyable {
       /** set attribute type in csv file
       *
       * @param int type code
-      * 
+      * @author Thimal
       * 
       */
       // for csv to set type of attribute after get actual values
-      //@author thimal
       public void setType(int tp){
     	  m_Type=tp;
       }
       /** set attribute values in nominal type attribute
       *
       * @param FastVector attribute values
-      * 
+      * @author Thimal
       * 
       */
       // set nominal values for attribute after get the values
@@ -187,20 +186,19 @@ implements Copyable {
     	  m_Values=attributeValues;
       }
       /** Retrns the FastVector attribute value of the nominal attribute
-      *
-      * 
+      *@return FastVector of attribute values of nominal attributes
+      * @author Thimal
       * 
       */
-      //@author thimal
+
       public FastVector getValues(){
     	  return m_Values;
       }
       /** add new value to the nominal attribute
       *
-      * 
+      * @author Thimal
       * 
       */
-      //@author thimal
       public void addValue(Object value ){
     	  if(m_Values==null)
     		  m_Values=new FastVector();

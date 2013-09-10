@@ -23,12 +23,6 @@ package gaknn.core.kdtree;
 
 import gaknn.core.Instance;
 import gaknn.core.Instances;
-//import gaknn.core.Instances;
-//import weka.core.RevisionUtils;
-//import weka.core.TechnicalInformation;
-//import weka.core.TechnicalInformationHandler;
-//import weka.core.TechnicalInformation.Field;
-//import weka.core.TechnicalInformation.Type;
 
 /**
  <!-- globalinfo-start -->
@@ -67,40 +61,6 @@ public class KMeansInpiredMethod
   /** for serialization. */
   private static final long serialVersionUID = -866783749124714304L;
 
-  /**
-   * Returns a string describing this nearest neighbour search algorithm.
-   * 
-   * @return 		a description of the algorithm for displaying in the
-   *         		explorer/experimenter gui
-   */
-//  public String globalInfo() {
-//    return 
-//        "The class that splits a node into two such that the overall sum "
-//      + "of squared distances of points to their centres on both sides " 
-//      + "of the (axis-parallel) splitting plane is minimum.\n\n"
-//      + "For more information see also:\n\n"
-//      + getTechnicalInformation().toString();
-//  }
-
-  /**
-   * Returns an instance of a TechnicalInformation object, containing detailed
-   * information about the technical background of this class, e.g., paper
-   * reference or book this class is based on.
-   * 
-   * @return		the technical information about this class
-   */
-//  public TechnicalInformation getTechnicalInformation() {
-//    TechnicalInformation result;
-//
-//    result = new TechnicalInformation(Type.MASTERSTHESIS);
-//    result.setValue(Field.AUTHOR, "Ashraf Masood Kibriya");
-//    result.setValue(Field.TITLE, "Fast Algorithms for Nearest Neighbour Search");
-//    result.setValue(Field.YEAR, "2007");
-//    result.setValue(Field.SCHOOL, "Department of Computer Science, School of Computing and Mathematical Sciences, University of Waikato");
-//    result.setValue(Field.ADDRESS, "Hamilton, New Zealand");
-//
-//    return result;
-//  }
 
   /** 
    * Splits a node into two such that the overall sum of squared distances 
@@ -370,13 +330,5 @@ public class KMeansInpiredMethod
     }// endfor
     return left + 1;
   }
-  
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.2 $");
-//  }
+
 }

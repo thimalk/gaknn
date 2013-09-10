@@ -5,15 +5,23 @@ import gaknn.core.Instances;
 import gaknn.core.Pair;
 import gaknn.core.kdtree.KDTree;
 import gaknn.similarity.AbstractSimilarity;
-
+/**
+ * represent the predictor using kd tree data structure
+ *
+ * @author Thimal Kempitiya
+ */
 public class PredictorKdtree extends Predictor {
+	 /**KD tree data structure. */
 	KDTree kdTree;
 
 	public PredictorKdtree(AbstractSimilarity sim, Instance[] trSet, Instances inst,double[] weights) {
 		super(sim, trSet);
+		
 		kdTree=new KDTree(inst);
+		//set weights to kdtree
 		kdTree.SetWeights(weights);
 		try {
+			//set the instances to kdtree
 			kdTree.setInstances(inst);
 			
 		} catch (Exception e) {
@@ -25,7 +33,9 @@ public class PredictorKdtree extends Predictor {
 	}
 	  /** get attribute values and find the majority class value confidence by finding k nearest neighbors form kd tree 
 	  
-	   *  find the k nearest neighbors from kd tree and find the vote for each class value and return the majority class value confidence. */
+	   *  find the k nearest neighbors from kd tree and find the vote for each class value and return the majority class value confidence.
+	   *  @param Instance instance need to find confidence
+	   *  @return double confidence value  */
 	@Override
 	public double Predict(Instance instance) {
 		Instances kNeighbours=null;
@@ -63,7 +73,9 @@ public class PredictorKdtree extends Predictor {
 	
 	  /** get attribute values and find the majority class value by finding k nearest neighbors form kd tree 
 	   * first create instance which have the attribute values
-	   * then find the k nearest neighbors from kd tree and find the vote for each class value and return the majority class value and its confidence. */
+	   * then find the k nearest neighbors from kd tree and find the vote for each class value and return the majority class value and its confidence.
+	   * @param double [] attribute values of instance need to find class index and confidence
+	   * @return Pair class include index of class predicted and confidence */
 	@Override
 	public Pair Predict(double[] instance) {
 		// TODO Auto-generated method stub
@@ -100,7 +112,10 @@ public class PredictorKdtree extends Predictor {
 		        return new Pair(clsIndex, confidence);
 		
 	}
-	  /** find the confidence when votes for each class value and index of confidence need class value is given */
+	  /** find the confidence when votes for each class value and index of confidence need class value is given 
+	   * @param double [] vote for each class value
+	   * @param int class index 
+	   * @return double calculated confidence value which is fraction of total votes*/
 	 public double CalculateClassConf(double[] vote, int clsId){
 	        double conf;
 	        double totconf = 0.0;

@@ -21,9 +21,6 @@
 
 package gaknn.core.kdtree;
 
-//import weka.core.AdditionalMeasureProducer;
-//import weka.core.DistanceFunction;
-//import weka.core.EuclideanDistance;
 import gaknn.core.Instance;
 import gaknn.core.Instances;
 //import weka.core.Option;
@@ -298,14 +295,7 @@ public abstract class NearestNeighbourSearch
       index = i;
     }
     
-    /**
-     * Returns the revision string.
-     * 
-     * @return		the revision
-     */
-//    public String getRevision() {
-//      return RevisionUtils.extract("$Revision: 1.2 $");
-//    }
+ 
   }
   
   /**
@@ -349,15 +339,7 @@ public abstract class NearestNeighbourSearch
 
       this(distance, instance, null);
     }
-    
-    /**
-     * Returns the revision string.
-     * 
-     * @return		the revision
-     */
-//    public String getRevision() {
-//      return RevisionUtils.extract("$Revision: 1.2 $");
-//    }
+
   } 
 
   /**
@@ -519,15 +501,7 @@ public abstract class NearestNeighbourSearch
     public NeighborNode getLast() {
       return m_Last;
     }
-    
-    /**
-     * Returns the revision string.
-     * 
-     * @return		the revision
-     */
-//    public String getRevision() {
-//      return RevisionUtils.extract("$Revision: 1.2 $");
-//    }
+  
   }
   
   /** The neighbourhood of instances to find neighbours in. */
