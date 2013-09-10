@@ -9,7 +9,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+/**
+ * Cass to write the predicted values to csv file or arff file
+ * @author Thimal Kempitiya
+ */
 public class DataFileWriter {
 
     protected String m_filePath;
@@ -45,12 +48,16 @@ public class DataFileWriter {
     protected String[] m_classArray;
     protected Pair[] m_preictions; 
     
+    
     public DataFileWriter(String className,String[]classArray,Pair[] predictions){
     	m_className=className;
     	m_preictions=predictions;
     	m_classArray=classArray;
     	
     }
+    /** write the output to a csv format
+     * 
+     * @param String file name. */
     public void writeCSVOutput(String filename){
     	File file = new File(filename+".csv");
     	 try{
@@ -73,6 +80,9 @@ public class DataFileWriter {
 		}
 		
     }
+    
+    /** write the output into a arff file
+     * @param String file name. */
   public void writeARFFOuput(String filename){
 	  File file = new File(filename+".arff");
  	 try{

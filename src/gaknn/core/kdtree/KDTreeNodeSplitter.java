@@ -241,13 +241,5 @@ public abstract class KDTreeNodeSplitter
     }
     return w;
   }
-  
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.2 $");
-//  }
+
 }

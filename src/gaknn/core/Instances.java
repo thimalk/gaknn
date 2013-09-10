@@ -1,11 +1,6 @@
 package gaknn.core;
 
 
-
-
-
-//import Instance;
-
 /**
  * Instances class represents the data.
  *
@@ -69,16 +64,18 @@ public class Instances {
      * @param dataset the instances from which the header information is to be
      *          taken
      * @param capacity the capacity of the new dataset
+     * @author Thimal
      */
-    //@author thimal
     public Instances(/* @non_null@ */Instances dataset, int capacity) {
       initialize(dataset, capacity);
     }
     /**
      * set the type this is needed when csv file is reading need to give type after reading values 
-     * @param int index and int type 0: Numeric, 1:Nominal, 2:String, 3: Date
+     * @param int index
+     * @param int type 0: Numeric, 1:Nominal, 2:String, 3: Date
+     * @author Thimal
+     * 
      */ 
-    //@author thimal
     public void setType(int i,int tp){
     	
     	Attribute attr=(Attribute)m_Attributes.elementAt(i);
@@ -89,9 +86,10 @@ public class Instances {
     /**
      * set attribute for csv after header read
      * when attribute is nominal set the class values after header is read. 
-     * @param int index and FastVector attributeValues
+     * @param int index
+     * @param FastVector attributeValues
+     * @author Thimal
      */ 
-    //@author thimal
     public void setAttributeValues(int i,FastVector attributeValues){
     	Attribute attr=(Attribute)m_Attributes.elementAt(i);
     	attr.setValues(attributeValues);
@@ -105,8 +103,8 @@ public class Instances {
      * 
      * @param dataset the dataset to use as template
      * @param capacity the number of rows to reserve
+     * @author Thimal
      */
-    //@author thimal
     protected void initialize(Instances dataset, int capacity) {
       if (capacity < 0)
         capacity = 0;
@@ -125,8 +123,8 @@ public class Instances {
      * relational values are not transferred.
      * 
      * @param instance the instance to be added
+     * @author Thimal
      */
-    //thimal
     public void add(/* @non_null@ */Instance instance) {
 
       Instance newInstance = (Instance) instance.copy();
@@ -319,10 +317,10 @@ public class Instances {
      * 
      * @param index the instance's index (index starts with 0)
      * @return the instance at the given position
+     * @author Thimal
      */
     // @ requires 0 <= index;
     // @ requires index < numInstances();
-    // @ author thimal
     public/* @non_null pure@ */Instance instance(int index) {
 
       return (Instance) m_Instances.elementAt(index);

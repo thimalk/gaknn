@@ -1,29 +1,6 @@
-/*
- *    This program is free software; you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation; either version 2 of the License, or
- *    (at your option) any later version.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program; if not, write to the Free Software
- *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- */
 
-/*
- *    EuclideanDistance.java
- *    Copyright (C) 1999-2007 University of Waikato, Hamilton, New Zealand
- *
- */
 
 package gaknn.core.kdtree;
-
-//import weka.core.TechnicalInformation.Field;
-//import weka.core.TechnicalInformation.Type;
 import gaknn.core.Instance;
 import gaknn.core.Instances;
 import gaknn.core.kdtree.PerformanceStats;
@@ -100,42 +77,6 @@ public class EuclideanDistance
     super(data);
     m_Weights=weights;
   }
-
-  /**
-   * Returns a string describing this object.
-   * 
-   * @return 		a description of the evaluator suitable for
-   * 			displaying in the explorer/experimenter gui
-   */
-//  public String globalInfo() {
-//    return 
-//        "Implementing Euclidean distance (or similarity) function.\n\n"
-//      + "One object defines not one distance but the data model in which "
-//      + "the distances between objects of that data model can be computed.\n\n"
-//      + "Attention: For efficiency reasons the use of consistency checks "
-//      + "(like are the data models of the two instances exactly the same), "
-//      + "is low.\n\n"
-//      + "For more information, see:\n\n"
-//      + getTechnicalInformation().toString();
-//  }
-//
-//  /**
-//   * Returns an instance of a TechnicalInformation object, containing 
-//   * detailed information about the technical background of this class,
-//   * e.g., paper reference or book this class is based on.
-//   * 
-//   * @return 		the technical information about this class
-//   */
-//  public TechnicalInformation getTechnicalInformation() {
-//    TechnicalInformation 	result;
-//    
-//    result = new TechnicalInformation(Type.MISC);
-//    result.setValue(Field.AUTHOR, "Wikipedia");
-//    result.setValue(Field.TITLE, "Euclidean distance");
-//    result.setValue(Field.URL, "http://en.wikipedia.org/wiki/Euclidean_distance");
-//
-//    return result;
-//  }
   
   /**
    * Calculates the distance between two instances.
@@ -271,13 +212,5 @@ public String globalInfo() {
 	// TODO Auto-generated method stub
 	return null;
 }
-  
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.13 $");
-//  }
+
 }

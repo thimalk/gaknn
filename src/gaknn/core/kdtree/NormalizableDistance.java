@@ -21,8 +21,6 @@
  */
 
 package gaknn.core.kdtree;
-
-//import weka.core.neighboursearch.PerformanceStats;
 import gaknn.core.Attribute;
 import gaknn.core.Instance;
 import gaknn.core.Instances;
@@ -73,8 +71,8 @@ public abstract class NormalizableDistance
   /**
    * Invalidates the distance function, Instances must be still set.
    */
-  /** Keep the weight elements. */
-  //@author thimal
+  /** Keep the weight elements.
+   * @author Thimal */
   static double[] m_Weights;
   
   public NormalizableDistance() {
@@ -124,7 +122,15 @@ public abstract class NormalizableDistance
 //    
 //    return result.elements();
 //  }
-
+  /**
+   * set the weights 
+   * 
+   * @param double[] array of weights
+   * @author Thimal
+   */
+  public void SetWeights(double[] weights){
+      m_Weights = weights;
+  }
   /**
    * Gets the current settings. Returns empty array.
    *
@@ -225,15 +231,7 @@ public abstract class NormalizableDistance
     m_AttributeIndices.setRanges(value);
     invalidate();
   }
-  /**
-   * set the weights 
-   * 
-   * @param double array of weights
-   */
-  //@author thimal
-  public void SetWeights(double[] weights){
-      m_Weights = weights;
-  }
+ 
   
   /**
    * Gets the range of attributes used in the calculation of the distance.
@@ -393,7 +391,7 @@ public abstract class NormalizableDistance
   }
 
   /**
-   * Calculates the distance between two instances. Offers speed up (if the 
+   * Calculates the distance between two instances considering weights. Offers speed up (if the 
    * distance function class in use supports it) in nearest neighbour search by 
    * taking into account the cutOff or maximum distance. Depending on the 
    * distance function class, post processing of the distances by 
@@ -408,6 +406,7 @@ public abstract class NormalizableDistance
    * @return 		the distance between the two given instances or 
    * 			Double.POSITIVE_INFINITY if the distance being 
    * 			calculated becomes larger than cutOffValue. 
+   * @author Thimal
    */
   public double distance(Instance first, Instance second, double cutOffValue, PerformanceStats stats) {
     double distance = 0;
@@ -469,6 +468,7 @@ public abstract class NormalizableDistance
       }
       if (stats != null)
 	stats.incrCoordCount();
+      //get distance value relevant to the attribute value and include it when finding distance
       distance = updateDistance(distance, m_Weights[firstI]*diff);
       if (distance > cutOffValue)
         return Double.POSITIVE_INFINITY;
