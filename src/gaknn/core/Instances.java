@@ -271,6 +271,7 @@ public class Instances {
         
         // set the m_instances
         Instance ins=new Instance(values);
+        ins.SetClassIndex(classIndex);
        add(ins);
     }
     

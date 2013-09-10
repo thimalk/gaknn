@@ -42,8 +42,8 @@ public class OptimizeKNN {
     private static int m_MaxIntGeneVal = 10;
     
     
-    private static String m_DataFilePath = "";
-    private static String m_TestFilePath  = "";
+    private static String m_DataFilePath = "abalone_t.arff";
+    private static String m_TestFilePath  = "abalone_test.arff";
     private static Instance[] m_TrainingSet;
     private static Instance[] m_TestSet;
     private static FastVector m_Attributes;
@@ -57,7 +57,7 @@ public class OptimizeKNN {
     private static Instances m_TData;
     private static int genNo;
     private static boolean m_FindK = true;
-    private static int m_ClassAttribIndex = -1;
+    private static int m_ClassAttribIndex = 0;
     private static String m_ParameterFile;
     private static double[] m_Weights;
     private static String m_task = "p";
@@ -391,7 +391,8 @@ public class OptimizeKNN {
     public static void main(String[] args) {
         // TODO code application logic here
         ParseArguments(args);
-        
+        m_ParameterFile="abalone_training.prm";
+        m_task="o";
         try 
         {
         	//o :optimizing the k value and the weight values
