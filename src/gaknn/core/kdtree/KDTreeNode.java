@@ -21,8 +21,6 @@
 
 package gaknn.core.kdtree;
 
-//import weka.core.RevisionHandler;
-//import weka.core.RevisionUtils;
 
 import java.io.Serializable;
 
@@ -170,13 +168,5 @@ public class KDTreeNode
   public int numInstances() {
     return (m_End-m_Start+1);
   }
-  
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.2 $");
-//  }
+
 }

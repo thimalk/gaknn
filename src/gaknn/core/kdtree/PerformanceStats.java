@@ -21,9 +21,6 @@
 
 package gaknn.core.kdtree;
 
-//import weka.core.AdditionalMeasureProducer;
-//import weka.core.RevisionHandler;
-//import weka.core.RevisionUtils;
 
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -333,12 +330,5 @@ public class PerformanceStats
     return buf.toString();
   }
   
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.2 $");
-//  }
+
 }

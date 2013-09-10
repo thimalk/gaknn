@@ -76,9 +76,9 @@ implements Copyable {
     }
     /** Return number of values in instance.
     *
-    * 
+    * @return int attribute value size
+    * @author Thimal
     */
-    //@author thimal
     public int numValues(){
     	return m_AttValues.length;
     }
@@ -88,8 +88,8 @@ implements Copyable {
      *
      * @param position the position 
      * @return the index of the attribute stored at the given position
+     * @author Thimal
      */
-    //@author thimal
     public /*@pure@*/ int index(int position) {
 
       return position;
@@ -102,8 +102,8 @@ implements Copyable {
      * @return the specified value as a double (If the corresponding
      * attribute is nominal (or a string) then it returns the value's index as a 
      * double).
+     * @author Thimal
      */
-    //@author thimal
     public /*@pure@*/ double valueSparse(int indexOfIndex) {
 
       return m_AttValues[indexOfIndex];
@@ -113,8 +113,8 @@ implements Copyable {
      *
      * @param attIndex the attribute's index
      * @return true if the value is "missing"
+     * @author Thimal
      */
-    //@author thimal
     public /*@pure@*/ boolean isMissing(int attIndex) {
 
       if (Double.isNaN(m_AttValues[attIndex])) {
@@ -127,8 +127,8 @@ implements Copyable {
      *
      * @param val the value to be tested
      * @return true if val codes "missing"
+     * @author Thimal
      */
-    //@author thimal
     public static /*@pure@*/ boolean isMissingValue(double val) {
 
         return Double.isNaN(val);
@@ -141,8 +141,8 @@ implements Copyable {
      * Returns the values of each attribute as an array of doubles.
      *
      * @return an array containing all the instance attribute values
+     * @author Thimal
      */
-    //@author thimal
     public double[] toDoubleArray() {
 
       double[] newValues = new double[m_AttValues.length];
@@ -153,8 +153,8 @@ implements Copyable {
     /**
      * Clones the attribute vector of the instance and
      * overwrites it with the clone.
+     * @author Thimal
      */
-    //@author thimal
     private void freshAttributeVector() {
 
         m_AttValues = toDoubleArray();
@@ -168,8 +168,8 @@ implements Copyable {
      * @param value the new attribute value (If the corresponding
      * attribute is nominal (or a string) then this is the new value's
      * index as a double).  
+     * @author Thimal
      */
-    //@author thimal
     public void setValue(int attIndex, double value) {
       
       freshAttributeVector();
@@ -181,9 +181,9 @@ implements Copyable {
      * about this instance. If the structure of the dataset's header
      * gets changed, this instance will not be adjusted automatically.
      *
-     * @param instances the reference to the dataset 
+     * @param instances the reference to the dataset
+     * @author Thimal 
      */
-    //@author thimal
     public final void setDataset(Instances instances) {
       
       m_Dataset = instances;

@@ -22,7 +22,6 @@
 
 package gaknn.core.kdtree;
 
-//import gaknn.core.kdtree.DistanceFunction;
 import gaknn.core.kdtree.EuclideanDistance;
 import gaknn.core.Instance;
 import gaknn.core.Instances;
@@ -150,8 +149,8 @@ public class KDTree
   /** The index of WIDTH (MAX-MIN) value in attributes' range array. */
   public static final int WIDTH = EuclideanDistance.R_WIDTH;
   
-  /** keep the weights. */
-  //@author thimal
+  /** keep the weights.
+   * @author Thimal */
   protected static double[] m_Weights;
  
 
@@ -1143,36 +1142,14 @@ public class KDTree
   }
   
   /** set the weights
-   * @param get double array of weights. */
+   * @param get double array of weights.
+   * @author Thimal */
   public void SetWeights(double[] weights){
       m_Weights = weights;
       m_EuclideanDistance.SetWeights(weights);
   }
 
-  /**
-   * Returns a string describing this nearest neighbour search algorithm.
-   * 
-   * @return 		a description of the algorithm for displaying in the
-   *         		explorer/experimenter gui
-   */
-//  public String globalInfo() {
-//    return 
-//        "Class implementing the KDTree search algorithm for nearest "
-//      + "neighbour search.\n"
-//      + "The connection to dataset is only a reference. For the tree "
-//      + "structure the indexes are stored in an array. \n"
-//      + "Building the tree:\n"
-//      + "If a node has <maximal-inst-number> (option -L) instances no "
-//      + "further splitting is done. Also if the split would leave one "
-//      + "side empty, the branch is not split any further even if the "
-//      + "instances in the resulting node are more than "
-//      + "<maximal-inst-number> instances.\n"
-//      + "**PLEASE NOTE:** The algorithm can not handle missing values, so it "
-//      + "is advisable to run ReplaceMissingValues filter if there are any "
-//      + "missing values in the dataset.\n\n"
-//      + "For more information see:\n\n"
-//      + getTechnicalInformation().toString();
-//  }
+  
 //
 //  /**
 //   * Returns an enumeration describing the available options.

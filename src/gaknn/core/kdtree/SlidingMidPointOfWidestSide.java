@@ -21,11 +21,6 @@
 
 package gaknn.core.kdtree;
 
-//import weka.core.RevisionUtils;
-//import weka.core.TechnicalInformation;
-//import weka.core.TechnicalInformationHandler;
-//import weka.core.TechnicalInformation.Field;
-//import weka.core.TechnicalInformation.Type;
 
 /**
  <!-- globalinfo-start -->
@@ -69,44 +64,7 @@ public class SlidingMidPointOfWidestSide
    * rectangular side. */
   protected static double ERR = 0.001;
 
-  /**
-   * Returns a string describing this nearest neighbour search algorithm.
-   * 
-   * @return 		a description of the algorithm for displaying in the
-   *         		explorer/experimenter gui
-   */
-//  public String globalInfo() {
-//    return 
-//        "The class that splits a node into two based on the midpoint value of "
-//      + "the dimension in which the node's rectangle is widest. If after "
-//      + "splitting one side is empty then it is slided towards the non-empty "
-//      + "side until there is at least one point on the empty side.\n\n"
-//      + "For more information see also:\n\n"
-//      + getTechnicalInformation().toString();
-//  }
-  
-  /**
-   * Returns an instance of a TechnicalInformation object, containing detailed
-   * information about the technical background of this class, e.g., paper
-   * reference or book this class is based on.
-   * 
-   * @return 		the technical information about this class
-   */
-//  public TechnicalInformation getTechnicalInformation() {
-//    TechnicalInformation result;
-//
-//    result = new TechnicalInformation(Type.MANUAL);
-//    result.setValue(Field.AUTHOR, "David M. Mount");
-//    result.setValue(Field.YEAR, "2006");
-//    result.setValue(Field.TITLE, "ANN Programming Manual");
-//    result.setValue(Field.ORGANIZATION, "Department of Computer Science, University of Maryland");
-//    result.setValue(Field.ADDRESS,
-//        "College Park, MD, USA");
-//    result.setValue(Field.HTTP,
-//        "Available from http://www.cs.umd.edu/~mount/ANN/");
-//
-//    return result;
-//  }
+ 
 
   /** 
    * Splits a node into two based on the midpoint value of the dimension 
@@ -256,12 +214,5 @@ public class SlidingMidPointOfWidestSide
     return left + 1;
   }
   
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.3 $");
-//  }
+
 }

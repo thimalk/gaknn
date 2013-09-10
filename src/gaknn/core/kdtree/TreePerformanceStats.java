@@ -21,7 +21,7 @@
 
 package gaknn.core.kdtree;
 
-//import weka.core.RevisionUtils;
+
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -310,13 +310,5 @@ public class TreePerformanceStats
 
     return buf.toString();
   }
-  
-  /**
-   * Returns the revision string.
-   * 
-   * @return		the revision
-   */
-//  public String getRevision() {
-//    return RevisionUtils.extract("$Revision: 1.2 $");
-//  }
+
 }
