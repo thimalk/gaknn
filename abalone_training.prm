@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<parameters>
+<weights>
+<Length>4.299672973588131</Length>
+<Diameter>0.5768114847975292</Diameter>
+<Height>6.177008364600876</Height>
+<Whole_weight>0.8578815108362736</Whole_weight>
+<Shucked_weight>1.2979579474997005</Shucked_weight>
+<Viscera_weight>4.136227562401496</Viscera_weight>
+<Shell_weight>4.425910584904965</Shell_weight>
+<Rings>5.206485951206284</Rings>
+</weights>
+<k>
+<value>1</value>
+</k>
+</parameters>

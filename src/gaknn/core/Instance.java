@@ -29,6 +29,7 @@ implements Copyable {
     public Instance( Instance instance) {
 	    
         m_AttValues = instance.m_AttValues;
+        SetClassIndex(instance.GetClassIndex());
         m_Dataset = null;
     }
     
