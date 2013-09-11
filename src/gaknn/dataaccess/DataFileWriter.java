@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 /**
- * Cass to write the predicted values to csv file or arff file
+ * Class to write the predicted values to csv file or arff file
  * @author Thimal Kempitiya
  */
 public class DataFileWriter {
@@ -49,16 +49,16 @@ public class DataFileWriter {
     protected Pair[] m_preictions; 
     
     
-    public DataFileWriter(String className,String[]classArray,Pair[] predictions){
+    public DataFileWriter(String className,String[]classArray){
     	m_className=className;
-    	m_preictions=predictions;
     	m_classArray=classArray;
     	
     }
     /** write the output to a csv format
      * 
      * @param String file name. */
-    public void writeCSVOutput(String filename){
+    public void writeCSVOutput(String filename,Pair[] predictions){
+    	m_preictions=predictions;
     	File file = new File(filename+".csv");
     	 try{
 		file.createNewFile();
@@ -83,46 +83,37 @@ public class DataFileWriter {
     
     /** write the output into a arff file
      * @param String file name. */
-  public void writeARFFOuput(String filename){
+  public void writeARFFOuput(String filename,Pair[] predictions){
+	  m_preictions=predictions;
 	  File file = new File(filename+".arff");
  	 try{
 		file.createNewFile();
 
 		FileWriter fw = new FileWriter(file.getAbsoluteFile());
-		PrintWriter pw=new PrintWriter(fw);
-		BufferedWriter bw = new BufferedWriter(fw);
 		
-		//bw.write(ARFF_RELATION+" "+filename+" output\n");
-		pw.println(ARFF_RELATION+" "+filename+" output");
-		//bw.newLine();
-		//bw.flush();
+		BufferedWriter bw = new BufferedWriter(fw);
+		PrintWriter pw=new PrintWriter(bw);
+		pw.print(ARFF_RELATION+" "+filename+"_output");
+		pw.print("\n");
 		pw.flush();
-		//bw.write(ARFF_ATTRIBUTE+" "+m_className+" {");
 		pw.print(ARFF_ATTRIBUTE+" "+m_className+" {");
 		for(int i=0;i<m_classArray.length-1;i++){
-			//bw.write(m_classArray[i]+",");
 			pw.print(m_classArray[i]+",");
 		}
-		//bw.write(m_classArray[m_classArray.length-1]+"}\n");
-		pw.println(m_classArray[m_classArray.length-1]+"}");
-		//bw.newLine();
-		bw.flush();
-		//bw.write(ARFF_ATTRIBUTE+" "+PERCENTAGE+" "+ARFF_ATTRIBUTE_NUMERIC+"\n");
-		pw.println(ARFF_ATTRIBUTE+" "+PERCENTAGE+" "+ARFF_ATTRIBUTE_NUMERIC);
-		//bw.newLine();
-		bw.flush();
-		//bw.write(ARFF_DATA+"\n");
-		pw.println(ARFF_DATA);
-		//bw.newLine();
-		//bw.flush();
-		
+		pw.print(m_classArray[m_classArray.length-1]+"}");
+		pw.print("\n");
+		pw.flush();
+		pw.print(ARFF_ATTRIBUTE+" "+PERCENTAGE+" "+ARFF_ATTRIBUTE_NUMERIC);
+		pw.print("\n");
+		pw.flush();
+		pw.print(ARFF_DATA);
+		pw.print("\n");
+		pw.flush();
 			for(int i=0;i<m_preictions.length;i++){
-				//bw.write(m_classArray[m_preictions[i].Index()]+","+m_preictions[i].Value()+"\n");
-				pw.println(m_classArray[m_preictions[i].Index()]+","+m_preictions[i].Value());
-				//bw.newLine();
-				bw.flush();
+				pw.print(m_classArray[m_preictions[i].Index()]+","+m_preictions[i].Value());
+				pw.print("\n");
+				pw.flush();
 			}
-			bw.close();
 			pw.flush();
 			pw.close();
 		} catch (IOException e) {

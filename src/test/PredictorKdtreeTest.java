@@ -51,7 +51,7 @@ public class PredictorKdtreeTest {
 			Instance instance =new Instance(attVal);
 			 String[] ClassArray = m_Data.ClassArray();
 			int k = paramReader.ReadK();
-			kdtreeP=new PredictorKdtree(null,m_TrainingSet,m_Data,m_Weights); 
+			kdtreeP=new PredictorKdtree(m_Data,m_Weights); 
 			 kdtreeP.setClassList(ClassArray);
 		        kdtreeP.setK(3);
 			kdtreeP.Predict(instance);
@@ -82,7 +82,7 @@ public class PredictorKdtreeTest {
 			Instance instance =new Instance(attVal);
 			 String[] ClassArray = m_Data.ClassArray();
 			int k = paramReader.ReadK();
-			kdtreeP=new PredictorKdtree(null,m_TrainingSet,m_Data,m_Weights); 
+			kdtreeP=new PredictorKdtree(m_Data,m_Weights); 
 			 kdtreeP.setClassList(ClassArray);
 		        kdtreeP.setK(3);
 			kdtreeP.Predict(instance);
