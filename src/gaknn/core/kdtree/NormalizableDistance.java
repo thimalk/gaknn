@@ -54,7 +54,7 @@ public abstract class NormalizableDistance
   protected Instances m_Data = null;
 
   /** True if normalization is turned off (default false).*/
-  protected boolean m_DontNormalize = false;
+  protected boolean m_DontNormalize = true;
   
   /** The range of the attributes. */
   protected double[][] m_Ranges;
@@ -415,7 +415,7 @@ public abstract class NormalizableDistance
     int secondNumValues = second.numValues();
     int numAttributes = m_Data.NumAttributes();
     int classIndex = m_Data.GetClassIndex();
-    
+   
     validate();
     
     for (int p1 = 0, p2 = 0; p1 < firstNumValues || p2 < secondNumValues; ) {
@@ -429,19 +429,19 @@ public abstract class NormalizableDistance
       else
 	secondI = second.index(p2);
 
-      if (firstI == classIndex) {
-	p1++; 
-	continue;
-      }
+//      if (firstI == classIndex) {
+//	p1++; 
+//	continue;
+//      }
       if ((firstI < numAttributes) && !m_ActiveIndices[firstI]) {
 	p1++; 
 	continue;
       }
        
-      if (secondI == classIndex) {
-	p2++; 
-	continue;
-      }
+//      if (secondI == classIndex) {
+//	p2++; 
+//	continue;
+//      }
       if ((secondI < numAttributes) && !m_ActiveIndices[secondI]) {
 	p2++;
 	continue;
@@ -513,6 +513,7 @@ public abstract class NormalizableDistance
    * @return		the difference
    */
   protected double difference(int index, double val1, double val2) {
+	  
     switch (m_Data.Attribute(index).Type()) {
       case Attribute.NOMINAL:
         if (Instance.isMissingValue(val1) ||
@@ -531,8 +532,10 @@ public abstract class NormalizableDistance
              Instance.isMissingValue(val2)) {
             if (!m_DontNormalize)  //We are doing normalization
               return 1;
-            else
+            else{
+            	System.out.println("ddk="+(m_Ranges[index][R_MAX] - m_Ranges[index][R_MIN]));
               return (m_Ranges[index][R_MAX] - m_Ranges[index][R_MIN]);
+            }
           }
           else {
             double diff;
