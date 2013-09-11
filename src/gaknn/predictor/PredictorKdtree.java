@@ -14,9 +14,9 @@ public class PredictorKdtree extends Predictor {
 	 /**KD tree data structure. */
 	KDTree kdTree;
 
-	public PredictorKdtree(AbstractSimilarity sim, Instance[] trSet, Instances inst,double[] weights) {
-		super(sim, trSet);
-		
+	public PredictorKdtree( Instances inst,double[] weights) {
+		//super(sim, trSet);
+		super(null,null);
 		kdTree=new KDTree(inst);
 		//set weights to kdtree
 		kdTree.SetWeights(weights);
@@ -60,7 +60,11 @@ public class PredictorKdtree extends Predictor {
 		        
 		        // get class value of the given instance and find its confidence with k nearest neighbor
 		        int clsId = (int)instance.GetClassIndex();
+		        
+		        //Calculate the the confidence 
 		        double val = CalculateClassConf(vote,clsId);
+		        
+		 
 		        if (val < Double.MIN_VALUE)
 		            val = 0.0;
 		        else if (val > Double.MAX_VALUE)
@@ -108,7 +112,6 @@ public class PredictorKdtree extends Predictor {
 		        // find confidence of the majority vote
 		        double confidence = CalculateClassConf(vote,clsIndex);
 		        
-		        System.out.println("ggg"+clsIndex+" "+confidence);
 		        return new Pair(clsIndex, confidence);
 		
 	}

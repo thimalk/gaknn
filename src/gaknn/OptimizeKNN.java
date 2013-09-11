@@ -11,6 +11,7 @@ import gaknn.core.Instances;
 import gaknn.core.InvalidClassIndexException;
 import gaknn.core.Pair;
 import gaknn.dataaccess.ArffFileReader;
+import gaknn.dataaccess.DataFileWriter;
 import gaknn.dataaccess.ParameterReader;
 import gaknn.dataaccess.ParameterWriter;
 import gaknn.datapreprocess.BasicValueHandler;
@@ -18,6 +19,7 @@ import gaknn.evaluator.Evaluator;
 import gaknn.evaluator.SimpleWeightEvaluator;
 import gaknn.predictor.Predictor;
 import gaknn.predictor.Predictor1;
+import gaknn.predictor.PredictorKdtree;
 import gaknn.similarity.*;
 
 
@@ -42,7 +44,7 @@ public class OptimizeKNN {
     private static int m_MaxIntGeneVal = 10;
     
     
-    private static String m_DataFilePath = "abalone_t.arff";
+    private static String m_DataFilePath = "abalone_training.arff";
     private static String m_TestFilePath  = "abalone_test.arff";
     private static Instance[] m_TrainingSet;
     private static Instance[] m_TestSet;
@@ -278,7 +280,37 @@ public class OptimizeKNN {
         }
         return predictions;
     }
-    
+ private static  Pair[] PredictInstanceskdtree(double[][] instances)throws IOException{
+        
+        Pair[] predictions = new Pair[instances.length];
+        int recNo = m_Data.Size();
+        m_TrainingSet = new Instance[recNo];
+        
+        //ReadData(m_DataFilePath);
+        
+        
+        for (int i=0; i<recNo; i++){
+            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
+            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
+        }
+        
+        String[] ClassArray = m_Data.ClassArray();
+        AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
+       
+        ParameterReader paramReader = new ParameterReader(m_Attributes, m_ParameterFile);
+        m_Weights = paramReader.ReadWeights();
+        k = paramReader.ReadK();
+        simMeas.SetWeights(m_Weights);
+                
+        Predictor predictor = new PredictorKdtree(m_Data,m_Weights);
+        predictor.setClassList(ClassArray);
+        predictor.setK(k);
+
+        for (int i=0; i < instances.length; i++){
+            predictions[i] = predictor.Predict(instances[i]);
+        }
+        return predictions;
+    }
     
     private static void createTrainingdataSets(){
     	int DataSize = m_Data.Size();
@@ -392,7 +424,7 @@ public class OptimizeKNN {
         // TODO code application logic here
         ParseArguments(args);
         m_ParameterFile="abalone_training.prm";
-        m_task="o";
+        m_task="t";
         try 
         {
         	//o :optimizing the k value and the weight values
@@ -407,8 +439,26 @@ public class OptimizeKNN {
             {
                 ReadData(m_DataFilePath);
                 double[][] testSet = ReadTestData(m_TestFilePath);
+                long startTime = System.nanoTime();
                 Pair[] predictions = PredictInstances(testSet);
+                long endTime = System.nanoTime();
 
+                long duration1 = endTime - startTime;
+                
+                
+                DataFileWriter dfr=new DataFileWriter(m_className, m_Data.ClassArray());
+                dfr.writeARFFOuput("abalone",predictions);
+                
+                
+                startTime = System.nanoTime();
+               predictions = PredictInstanceskdtree(testSet);
+                endTime = System.nanoTime();
+
+                long duration2 = endTime - startTime;
+                System.out.println("Duration ad hoc = "+duration1/100000+" ms");                
+                System.out.println("Duration kdtree = "+duration2/100000+" ms");
+                dfr.writeARFFOuput("abalonekdtree",predictions);
+               
             }
         }
         catch (Exception e)
