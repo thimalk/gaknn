@@ -18,8 +18,9 @@ implements Copyable {
     /** The instance's attribute values. */
     protected double[] m_AttValues;
     protected String m_Class;
-    protected int m_ClassIndex;
-    
+    protected double m_ClassIndex;
+
+
     protected static final double DEFAULT_NUMVALUE = Double.NaN;
 
      /** Constructor for an instance
@@ -188,6 +189,8 @@ implements Copyable {
       
       m_Dataset = instances;
     }
+
+    
     /**
      * Produces a shallow copy of this instance. The copy has
      * access to the same dataset. (if you want to make a copy
@@ -238,7 +241,7 @@ implements Copyable {
      *
      * @param index the index of the instance.
      */
-    public void SetClassIndex(int index){
+    public void SetClassIndex(double index){
         m_ClassIndex = index;
     }
 
@@ -246,7 +249,7 @@ implements Copyable {
      *
      * @return the class index of the instance
      */
-    public int GetClassIndex(){
+    public double GetClassIndex(){
         return m_ClassIndex;
     }
     

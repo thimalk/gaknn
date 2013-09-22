@@ -15,9 +15,16 @@ public class Pair implements Comparable{
         index=i;
         value=v;
     }
+    //author thimal
+    public Pair(double i,double v){
+    	indexValue=i;
+    	value=v;
+    }
     
     int index; 
     double value;
+    //author thimal
+    double indexValue;
 	   
     public int Index(){
         return index;
@@ -25,6 +32,10 @@ public class Pair implements Comparable{
     
     public double Value(){
         return value;
+    }
+    //author thimal
+    public double indexValue(){
+    	return indexValue;
     }
 	   
     public int compareTo(Object pair) throws ClassCastException {

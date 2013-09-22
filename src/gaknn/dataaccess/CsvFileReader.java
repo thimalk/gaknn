@@ -185,7 +185,7 @@ public class CsvFileReader extends DataFileReader {
 	protected Instance ReadInstance() throws IOException {
 		double[] instanceValues = new double[m_Data.NumAttributes()];
 		int index = 0;
-		int classIndex = 0;
+		double classIndex = 0;
 		int numIndex = 0;
 		int strIndex = 0;
 		boolean bMissingValue;
@@ -226,7 +226,16 @@ public class CsvFileReader extends DataFileReader {
 					else
 						value = Double.valueOf(m_Tokenizer.sval);
 					
+
+                    if (m_Data.Attribute(i).IsClassAttribute())
+                    {
+                        m_Data.SetClassIndex(i);
+                        classIndex = value;
+                    }
+                    else
+                    {
 					instanceValues[i] = value;
+                    }
 					//put the type numeric into the attribute
 					if (!getType.get(i)) {
 						m_Data.setType(i, Attribute.NUMERIC);
