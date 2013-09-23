@@ -431,15 +431,19 @@ public class OptimizeKNN {
         	//t :training data
             if (m_task.equals("o"))
             {
+            	System.out.println("Read training data");
                 ReadData(m_DataFilePath);
                 createTrainingdataSets();
+                System.out.println("optimizing knn");
                 runOptimization();
             }
             else
             {
                 ReadData(m_DataFilePath);
+                System.out.println("Read test data");
                 double[][] testSet = ReadTestData(m_TestFilePath);
                 long startTime = System.nanoTime();
+               
                 Pair[] predictions = PredictInstances(testSet);
                 long endTime = System.nanoTime();
 
@@ -451,6 +455,7 @@ public class OptimizeKNN {
                 
                 
                 startTime = System.nanoTime();
+                
                predictions = PredictInstanceskdtree(testSet);
                 endTime = System.nanoTime();
 

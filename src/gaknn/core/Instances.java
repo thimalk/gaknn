@@ -16,7 +16,10 @@ public class Instances {
     protected FastVector m_Attributes;
     protected FastVector m_Instances;
     protected double [][] m_DataSet;
-    protected int [] m_ClassIdList;
+    protected double [] m_ClassIdList;
+    
+    /** regression values. */
+    protected double IDValueList;
     private int m_Capacity;
 
     /** The class attribute's index */
@@ -52,7 +55,7 @@ public class Instances {
         }
 
         if (m_NumAttributes > 0) m_DataSet = new double[CAPACITY][m_NumAttributes];
-        m_ClassIdList = new int[CAPACITY];
+        m_ClassIdList = new double[CAPACITY];
         m_Capacity = CAPACITY;
     }
     
@@ -180,13 +183,13 @@ public class Instances {
     public void SetClassProperties() throws InvalidClassIndexException{
         if (m_ClassIndex >= 0){
             Attribute attr = (Attribute) m_Attributes.elementAt(m_ClassIndex);
-
+            if(attr.Type()==1){
             m_NumClases = attr.NumValues();
             m_ClassArray = new String[m_NumClases];
 
             for (int i=0; i<m_NumClases; i++)
                 m_ClassArray[i] = attr.Value(i);
-
+            }
             m_Attributes.removeElementAt(m_ClassIndex);
         }
         else
@@ -244,7 +247,7 @@ public class Instances {
      *
      * @return the class id list of the data set
      */
-    public int[] ClassIdList(){
+    public double[] ClassIdList(){
         return m_ClassIdList;
     }
     
@@ -254,13 +257,13 @@ public class Instances {
      * @param values as a double array
      * @param classIndex the class index of the instance
      */
-    public void AddElement(int RecNo, double[] values, int classIndex){
+    public void AddElement(int RecNo, double[] values, double classIndex){
         if (RecNo >= m_Capacity){
             m_Capacity = m_Capacity + Double.valueOf(CAPACITY*0.5).intValue();
             if (m_NumAttributes > 0)
                 m_DataSet = (double[][])ResizeArray(m_DataSet,m_Capacity);
 
-            m_ClassIdList = (int[])ResizeArray(m_ClassIdList,m_Capacity);
+            m_ClassIdList = (double[])ResizeArray(m_ClassIdList,m_Capacity);
         } 
 
         if (m_NumAttributes > 0) m_DataSet[RecNo] = values;
@@ -279,7 +282,7 @@ public class Instances {
      */
     public void Compact() {
         m_DataSet = (double[][])ResizeArray(m_DataSet,m_Lines);
-        m_ClassIdList = (int[])ResizeArray(m_ClassIdList,m_Lines);
+        m_ClassIdList = (double[])ResizeArray(m_ClassIdList,m_Lines);
     }
     
     /** sets the class index of the data set

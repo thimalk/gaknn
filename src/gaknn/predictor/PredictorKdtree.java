@@ -46,7 +46,7 @@ public class PredictorKdtree extends Predictor {
 		//  get the k nearest neighbors form kd tree in a form of instances
 			kNeighbours=kdTree.kNearestNeighbours(instance, m_K);
 			 for (int i=0; i<m_K; i++){
-		            ClassIndex= kNeighbours.instance(i).GetClassIndex();
+		            ClassIndex= (int)kNeighbours.instance(i).GetClassIndex();
 		            vote[ClassIndex]+= 1;
 		        }
 			
@@ -92,7 +92,7 @@ public class PredictorKdtree extends Predictor {
 			//  get the k nearest neighbors form kd tree in a form of instances
 			Instances kNeighbours=kdTree.kNearestNeighbours(inst, m_K);
 			 for (int i=0; i<m_K; i++){
-				 ClassIndex = kNeighbours.instance(i).GetClassIndex();
+				 ClassIndex = (int)kNeighbours.instance(i).GetClassIndex();
 		            vote[ClassIndex]+= 1;
 		        }
 			

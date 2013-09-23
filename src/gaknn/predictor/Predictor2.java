@@ -33,7 +33,7 @@ public class Predictor2 extends Predictor1{
         
         for (int i=0; i<m_K; i++){
             int index = ((Pair)simList[i]).Index();
-            ClassIndex = trainSet[index].GetClassIndex();
+            ClassIndex = (int)trainSet[index].GetClassIndex();
             vote[ClassIndex]+= ((Pair)simList[i]).Value();
         }
         
