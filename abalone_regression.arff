@@ -1,0 +1,22 @@
+@relation abalone-weka.filters.unsupervised.instance.RemovePercentage-P60.0-weka.filters.unsupervised.attribute.Remove-R1
+
+@attribute Length numeric
+@attribute Diameter numeric
+@attribute Height numeric
+@attribute Whole_weight numeric
+@attribute Shucked_weight numeric
+@attribute Viscera_weight numeric
+@attribute Shell_weight numeric
+@attribute Rings numeric
+
+@data
+0.535,0.42,0.145,0.926,0.398,0.1965,0.25,17
+0.385,0.315,0.11,0.286,0.1225,0.0635,0.0835,10
+0.425,0.345,0.125,0.425,0.16,0.0795,0.154,13
+0.345,0.27,0.09,0.195,0.078,0.0455,0.059,9
+0.44,0.345,0.17,0.4085,0.15,0.0825,0.1515,12
+0.195,0.145,0.05,0.032,0.01,0.008,0.012,4
+0.45,0.35,0.145,0.525,0.2085,0.1,0.1655,15
+0.415,0.345,0.135,0.3865,0.128,0.07,0.148,13
+0.47,0.355,0.14,0.433,0.1525,0.095,0.152,12
+0.485,0.38,0.14,0.673,0.2175,0.13,0.195,18

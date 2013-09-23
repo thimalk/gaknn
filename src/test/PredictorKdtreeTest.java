@@ -44,6 +44,7 @@ public class PredictorKdtreeTest {
 	            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
 	        	
 	        }
+	        
 			
 			 ParameterReader paramReader = new ParameterReader(m_Attributes, "abalone_training.prm");
 		    double []m_Weights = paramReader.ReadWeights();

@@ -129,7 +129,7 @@ public class ArffFileReader extends DataFileReader{
     protected Instance ReadInstance() throws IOException {
         double[] instanceValues = new double [m_Data.NumAttributes()];
         int index = 0;
-        int classIndex = 0;
+        double classIndex = 0;
         int numIndex = 0;
         int strIndex = 0;
         boolean bMissingValue ;
@@ -195,6 +195,19 @@ public class ArffFileReader extends DataFileReader{
                 // Check if value is really a number.
                     try{
                         double value;
+                        if (bMissingValue)
+                        	value = m_ValueHandler.GetMissingValue(Attribute.NUMERIC, i); 
+                        else
+                            // Check if value appears in header.
+                        	 value = Double.valueOf(m_Tokenizer.sval).doubleValue();
+
+                        if (m_Data.Attribute(i).IsClassAttribute())
+                        {
+                            m_Data.SetClassIndex(i);
+                            classIndex = value;
+                        }
+                        else
+                        {
 
                         if (bMissingValue)
                             value = m_ValueHandler.GetMissingValue(Attribute.NUMERIC, i); 
@@ -203,6 +216,7 @@ public class ArffFileReader extends DataFileReader{
 
                         instanceValues[numIndex] = value;
                         numIndex++;
+                        }
                     } catch (NumberFormatException e) {
                         errorMessage("number expected");
                     }
