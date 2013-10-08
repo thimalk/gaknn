@@ -258,6 +258,7 @@ public class Instances {
      * @param classIndex the class index of the instance
      */
     public void AddElement(int RecNo, double[] values, double classIndex){
+    	
         if (RecNo >= m_Capacity){
             m_Capacity = m_Capacity + Double.valueOf(CAPACITY*0.5).intValue();
             if (m_NumAttributes > 0)

@@ -5,14 +5,22 @@ import java.util.Arrays;
 import gaknn.core.Instance;
 import gaknn.core.Pair;
 import gaknn.similarity.AbstractSimilarity;
-
+/** 
+ * class presenting the knn predictor for regression get the k nearest neighbors and get the predict by getting the average value 
+ * @author Thimal Kempitiya
+ */
 public class  PredictorRegression extends Predictor  {
 
 	public PredictorRegression(AbstractSimilarity sim, Instance[] trSet) {
 		super(sim, trSet);
 		// TODO Auto-generated constructor stub
 	}
-
+	/** 
+	 * method to check the confidence of the regression knn predictor get the predicted value and actual value and calcualte the confidence
+	 * @param Instance to predict 
+	 * @return double confidence value 
+	 * @author Thimal 
+	 */
 	@Override
 	public double Predict(Instance instance) {
 		 int dataLength = trainSet.length;
@@ -46,7 +54,13 @@ public class  PredictorRegression extends Predictor  {
 
 	        return val;
 	}
-
+	/** 
+	 * method to predict when attribute values are given this will give the predicted regression value according to the 
+	 * knn and its confidence
+	 * @param double array of attribute values
+	 * @return Pair double predicted value and double confidence value.
+	 * @author Thimal
+	 */
 	@Override
 	public Pair Predict(double[] instance) {
 	     Pair[] simList = new Pair[trainSet.length];
@@ -73,6 +87,13 @@ public class  PredictorRegression extends Predictor  {
 	        return new Pair(PredictedIndexValue, confidence);
 	       
 	}
+	/** 
+	 * method to calculate the confidence 
+	 * @param double votes for each predicted k values
+	 * @param double predicted value
+	 * @return double confidence
+	 * @author Thimal
+	 */
     public double CalculateClassConf(double [] vote, double IdValue){
         double conf=0;
         for(int i=0;i<m_K;i++){

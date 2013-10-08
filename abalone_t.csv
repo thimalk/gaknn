@@ -1,4 +1,4 @@
-class,Length,Diameter,Height,Whole Weight,Shucked weight,Viscera weight,Shell weight,Rings
+class,Length,Diameter,Height,Whole_Weight,Shucked_weight,Viscera_weight,Shell_weight,Rings
 Infant,0.535,0.42,0.145,0.926,0.398,0.1965,0.25,17
 Female,0.385,0.315,0.11,0.286,0.1225,0.0635,0.0835,10
 Infant,0.425,0.345,0.125,0.425,0.16,0.0795,0.154,13
