@@ -9,7 +9,10 @@ import gaknn.dataaccess.ArffFileReader;
 import gaknn.dataaccess.ParameterReader;
 import gaknn.datapreprocess.BasicValueHandler;
 import gaknn.predictor.Predictor;
+import gaknn.predictor.Predictor1;
 import gaknn.predictor.PredictorKdtree;
+import gaknn.similarity.AbstractSimilarity;
+import gaknn.similarity.BasicSimilarity;
 
 import java.io.IOException;
 
@@ -52,7 +55,9 @@ public class PredictorKdtreeTest {
 			Instance instance =new Instance(attVal);
 			 String[] ClassArray = m_Data.ClassArray();
 			int k = paramReader.ReadK();
-			kdtreeP=new PredictorKdtree(m_Data,m_Weights); 
+			 AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
+			 simMeas.SetWeights(m_Weights);
+			kdtreeP=new PredictorKdtree(m_Data,simMeas); 
 			 kdtreeP.setClassList(ClassArray);
 		        kdtreeP.setK(3);
 			kdtreeP.Predict(instance);
@@ -83,7 +88,9 @@ public class PredictorKdtreeTest {
 			Instance instance =new Instance(attVal);
 			 String[] ClassArray = m_Data.ClassArray();
 			int k = paramReader.ReadK();
-			kdtreeP=new PredictorKdtree(m_Data,m_Weights); 
+			 AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
+			 simMeas.SetWeights(m_Weights);
+			kdtreeP=new PredictorKdtree(m_Data,simMeas); 
 			 kdtreeP.setClassList(ClassArray);
 		        kdtreeP.setK(3);
 			kdtreeP.Predict(instance);
@@ -95,6 +102,40 @@ public class PredictorKdtreeTest {
 			e.printStackTrace();
 		}
 	}
+	
+    protected static Predictor CreatePredictor(String task,String type,AbstractSimilarity simMeas){
+    	Predictor predictor=null;
+    	if(type=="adhoc"){
+    		if(task=="p"){
+    			 int recNo = m_Data.Size();
+    		        m_TrainingSet = new Instance[recNo];
+    		        //ReadData(m_DataFilePath);
+    		        
+    		        
+    		        for (int i=0; i<recNo; i++){
+    		            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
+    		            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
+    		        }
+    		}
+    		predictor = new Predictor1(simMeas, m_TrainingSet);
+    		
+    	}
+    	else if(type=="kdtree")
+    		
+    		if(task=="o"){
+    			Instances inst=new Instances("traning", m_Attributes);
+    			int recNo=m_TrainingSet.length;
+    			for(int i=0;i<recNo;i++){
+    				inst.AddElement(i, m_TrainingSet[i].GetElements(), m_TrainingSet[i].GetClassIndex());
+    			}
+    			predictor=new PredictorKdtree(inst, simMeas);
+    			
+    		}
+    		else
+    		predictor = new PredictorKdtree(m_Data, simMeas);
+		return predictor;
+    	
+    }
 
 	private static void ReadData(String filePath) throws IOException {
 		try {

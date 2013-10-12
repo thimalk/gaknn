@@ -1,5 +1,6 @@
 package gaknn.dataaccess;
 
+import gaknn.Gaknn;
 import gaknn.core.Attribute;
 import gaknn.core.FastVector;
 import gaknn.core.Instance;
@@ -21,6 +22,8 @@ public class CsvFileReader extends DataFileReader {
 	 * keep the file extension
 	 */
 	public static String FILE_EXTENSION = "csv";
+	
+	private static String m_Method=Gaknn.CLASSIFIER_M;
 
 	/** Constant set for for missing values */
 	public static char MISSING_VALUE = '?';
@@ -30,9 +33,10 @@ public class CsvFileReader extends DataFileReader {
 	/** StreamTokenizer to divide the file values  */
 	StreamTokenizer m_Tokenizer;
 
-	public CsvFileReader(String sDataFile) {
+	public CsvFileReader(String sDataFile,String method) {
 		// get the csv file path
 		this.m_filePath = sDataFile;
+		this.m_Method=method;
 
 	}
 
@@ -157,6 +161,7 @@ public class CsvFileReader extends DataFileReader {
 				//in csv we can't find the type of the attribute when read header. indicate need to find the type of the attribute
 				getType.add(false);
 
+
 			} while (true);
 
 			// Check if any attributes have been declared.
@@ -183,6 +188,7 @@ public class CsvFileReader extends DataFileReader {
 
 	@Override
 	protected Instance ReadInstance() throws IOException {
+		
 		double[] instanceValues = new double[m_Data.NumAttributes()];
 		int index = 0;
 		double classIndex = 0;
@@ -196,8 +202,10 @@ public class CsvFileReader extends DataFileReader {
 		// get the first token it need to take separately as it may have the eol token 
 		getFirstToken();
 		// if eof token found return null as data reading is finished.
-		if(m_Tokenizer.ttype==StreamTokenizer.TT_EOF)
+		if(m_Tokenizer.ttype==StreamTokenizer.TT_EOF){
+			
 			return null;
+		}
 		for (int i = 0; i < m_Data.NumAllAttributes(); i++) {
 
 			// Get next token
@@ -231,27 +239,46 @@ public class CsvFileReader extends DataFileReader {
                     {
                         m_Data.SetClassIndex(i);
                         classIndex = value;
+                        
+                        if(m_Method==Gaknn.CLASSIFIER_M){
+                        	Attribute attr=(Attribute)m_Attributes.elementAt(i);
+							
+							if(attr.getValues()==null||attr.IndexOfValue(m_Tokenizer.sval)==-1){
+								attr.addValue(m_Tokenizer.sval);
+								m_Attributes.removeElementAt(i);
+								m_Attributes.insertElementAt(attr, i);
+							}
+                        }
                     }
                     else
                     {
-					instanceValues[i] = value;
+					instanceValues[numIndex] = value;
+					numIndex++;
                     }
 					//put the type numeric into the attribute
 					if (!getType.get(i)) {
+						if(m_Method==Gaknn.CLASSIFIER_M)
+							m_Data.setType(i, Attribute.NOMINAL);
+						else
 						m_Data.setType(i, Attribute.NUMERIC);
 						getType.set(i, true);
 						
 					}
+					
+					
 				// if value cannot covert to double it need to be date or nominal
 				} catch (Exception e) {
 						//check whether the value is of type date
 					if (isDate(m_Tokenizer.sval)) {
-						if (bMissingValue)
-							instanceValues[i] = Double.MAX_VALUE;
+						if (bMissingValue){
+							instanceValues[numIndex] = Double.MAX_VALUE;
+							numIndex++;
+						}
 						else
 							try {
-								instanceValues[i] = m_Data.Attribute(i)
+								instanceValues[numIndex] = m_Data.Attribute(i)
 										.ParseDate(m_Tokenizer.sval);
+								numIndex++;
 							} catch (ParseException e1) {
 								errorMessage("unparseable date: "
 										+ m_Tokenizer.sval);
@@ -265,7 +292,6 @@ public class CsvFileReader extends DataFileReader {
 						
 						// check for nominal values
 					} else {
-						
 						
 							Attribute attr=(Attribute)m_Attributes.elementAt(i);
 							
@@ -284,6 +310,7 @@ public class CsvFileReader extends DataFileReader {
 		                    {
 		                        m_Data.SetClassIndex(i);
 		                        classIndex = index;
+		                        
 		                    }
 		                    else
 		                    {

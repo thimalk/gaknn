@@ -33,7 +33,8 @@ public abstract class DataFileReader {
     protected int m_K;
     
     protected ValueHandler m_ValueHandler;
-    
+    public void ReadHeader() throws IOException {
+    };
     public void LoadData() throws IOException{
     	if (m_filePath.length()== 0)
     		throw new IOException("Missing file");

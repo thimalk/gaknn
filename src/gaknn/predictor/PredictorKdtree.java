@@ -14,12 +14,13 @@ public class PredictorKdtree extends Predictor {
 	 /**KD tree data structure. */
 	KDTree kdTree;
 
-	public PredictorKdtree( Instances inst,double[] weights) {
+	public PredictorKdtree( Instances inst,AbstractSimilarity sim) {
 		//super(sim, trSet);
-		super(null,null);
+		super(sim,null);
 		kdTree=new KDTree(inst);
 		//set weights to kdtree
-		kdTree.SetWeights(weights);
+		kdTree.SetWeights(sim.getWeights());
+		
 		try {
 			//set the instances to kdtree
 			kdTree.setInstances(inst);
@@ -133,6 +134,25 @@ public class PredictorKdtree extends Predictor {
 	            conf = (vote[clsId]/totconf);
 
 	        return conf;
+	    }
+	 
+	 public void setSimilarity(AbstractSimilarity similarity){
+	        similarityMeasure = similarity;
+	        Instances inst=kdTree.getInstances();
+	        kdTree=new KDTree(inst);
+			//set weights to kdtree
+			kdTree.SetWeights(similarity.getWeights());
+			
+			try {
+				//set the instances to kdtree
+				kdTree.setInstances(inst);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("building error kd tree");
+				e.printStackTrace();
+			}
+	        
 	    }
 
 }

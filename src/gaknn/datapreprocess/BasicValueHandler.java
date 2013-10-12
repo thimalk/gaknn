@@ -18,7 +18,8 @@ public class BasicValueHandler extends ValueHandler{
 
         switch (attrbuteType) {
         case  Attribute.STRING:
-            retValue = DefaultValue;
+            retValue = Double.parseDouble(sValue);
+          
         case Attribute.NOMINAL:
             Attribute attribute;
             attribute = (Attribute) m_Attributes.elementAt(index);
