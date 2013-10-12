@@ -28,6 +28,10 @@ public abstract class AbstractSimilarity {
         m_Weights = weights;
     }
     
+    public double[] getWeights(){
+    	return m_Weights;
+    }
+    
     public abstract double GetSimilarity(double[] attrbuteSet1, double[] attrbuteSet2); 
 
 

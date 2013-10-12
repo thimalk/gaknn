@@ -11,12 +11,15 @@ import gaknn.core.Instances;
 import gaknn.core.InvalidClassIndexException;
 import gaknn.core.Pair;
 import gaknn.dataaccess.ArffFileReader;
+import gaknn.dataaccess.CsvFileReader;
+import gaknn.dataaccess.DataFileReader;
 import gaknn.dataaccess.DataFileWriter;
 import gaknn.dataaccess.ParameterReader;
 import gaknn.dataaccess.ParameterWriter;
 import gaknn.datapreprocess.BasicValueHandler;
 import gaknn.evaluator.Evaluator;
 import gaknn.evaluator.SimpleWeightEvaluator;
+import gaknn.predictor.KNNPredictor;
 import gaknn.predictor.Predictor;
 import gaknn.predictor.Predictor1;
 import gaknn.predictor.PredictorKdtree;
@@ -44,7 +47,7 @@ public class OptimizeKNN {
     private static int m_MaxIntGeneVal = 10;
     
     
-    private static String m_DataFilePath = "abalone_training.arff";
+    private static String m_DataFilePath = "train.csv";
     private static String m_TestFilePath  = "abalone_test.arff";
     private static Instance[] m_TrainingSet;
     private static Instance[] m_TestSet;
@@ -63,7 +66,39 @@ public class OptimizeKNN {
     private static String m_ParameterFile;
     private static double[] m_Weights;
     private static String m_task = "p";
+    /** The keyword used to denote the normal predictor */
+    public final static String NORMAL_PREDICTOR= "normal";
+    /** The keyword used to denote the kdtree predictor */
+    public final static String KDTREE_PREDICTOR= "kdtree";
+    private static String m_predictorType=NORMAL_PREDICTOR;
     
+   
+    /**
+     * method to get the file extension of file name
+     * @param filePath
+     * @return int file extension arff 1, csv 2 and any other -1
+     */
+    public static int getFileExtension(String filePath){
+    	int arffIndex=filePath.indexOf("arff");
+    	int csvIndex=filePath.indexOf("csv");
+    	int lastIndex=filePath.length();
+
+    	if(arffIndex!=-1&&filePath.substring(arffIndex,lastIndex).equalsIgnoreCase("arff"))
+    		
+    			return 1;
+    	if(csvIndex!=-1&&filePath.substring(csvIndex,lastIndex).equalsIgnoreCase("csv"))
+    		return 2;
+    	return -1;
+
+    	
+    }
+    
+    /**
+     * method to optimized the weight values and k value
+     * use the Jgap framework genetic algorithm to get the optimized weight values and k value
+     * @throws Exception
+     */
+
     public static void runOptimization()throws Exception{
         
         //ReadData(m_DataFilePath);
@@ -76,7 +111,8 @@ public class OptimizeKNN {
         AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
         
        
-        Predictor predictor = new Predictor1(simMeas, m_TrainingSet);
+//        Predictor predictor = new Predictor1(simMeas, m_TrainingSet);
+        Predictor predictor=CreatePredictor(m_task, m_predictorType, simMeas);
         predictor.setClassList(ClassArray);
         Evaluator evaluator = new SimpleWeightEvaluator(predictor, m_TestSet);
     	
@@ -153,9 +189,17 @@ public class OptimizeKNN {
         }
         
         String parameterFileName = m_DataFilePath;
-        parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,ArffFileReader.FILE_EXTENSION);
         int i = parameterFileName.lastIndexOf(ArffFileReader.FILE_EXTENSION);
+        if(i!=-1){
+        parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,ArffFileReader.FILE_EXTENSION);
+        i = parameterFileName.lastIndexOf(ArffFileReader.FILE_EXTENSION);
         parameterFileName = parameterFileName.substring(0, i).concat(ParameterWriter.FILE_EXTENSION);
+        }
+        else{
+        	parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,CsvFileReader.FILE_EXTENSION);
+            i = parameterFileName.lastIndexOf(CsvFileReader.FILE_EXTENSION);
+            parameterFileName = parameterFileName.substring(0, i).concat(ParameterWriter.FILE_EXTENSION);
+        }
         //parameterFileName.replaceAll(ArffFileReader.FILE_EXTENSION,ParameterWriter.FILE_EXTENSION);
         ParameterWriter pWriter = new ParameterWriter(m_Attributes, parameterFileName);
         pWriter.Write(weights, k);
@@ -166,8 +210,13 @@ public class OptimizeKNN {
         try
         {
             if (filePath.length()==0) throw new IOException("Missing file name");
-
-            ArffFileReader dataFileReader = new ArffFileReader(filePath);
+            DataFileReader dataFileReader;
+            if(getFileExtension(filePath)==1)
+            dataFileReader = new ArffFileReader(filePath);
+            else if(getFileExtension(filePath)==2)
+            	 dataFileReader = new CsvFileReader(filePath,Gaknn.CLASSIFIER_M);
+            else
+            	throw new IOException("Extension Error");
             dataFileReader.SetValueHandler(new BasicValueHandler());
 
             dataFileReader.ReadHeader();
@@ -223,15 +272,20 @@ public class OptimizeKNN {
     	dataFileReader = null;
         return testdata.DataSet();
     }
-    
+    /**
+     * method to test the prediction given training value test the predicted value and given value and give confidence of the predicted value
+     * @param single instance attribute values as double array
+     * @return Pair predicted value and confidence
+     * @throws IOException
+     */
     private Pair PredictInstance(double[] instance) throws IOException{
         ReadData(m_DataFilePath);
-        int recNo = m_Data.Size();
-        
-        for (int i=0; i<recNo; i++){
-            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
-            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
-        }
+//        int recNo = m_Data.Size();
+//        
+//        for (int i=0; i<recNo; i++){
+//            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
+//            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
+//        }
         
         String[] ClassArray = m_Data.ClassArray();
         AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
@@ -241,27 +295,33 @@ public class OptimizeKNN {
         k = paramReader.ReadK();
         simMeas.SetWeights(m_Weights);
                 
-        Predictor predictor = new Predictor1(simMeas, m_TrainingSet);
+        //Predictor predictor = new Predictor1(simMeas, m_TrainingSet);
+        Predictor predictor=CreatePredictor(m_task, m_predictorType, simMeas);
         predictor.setClassList(ClassArray);
         predictor.setK(k);
         
 
         return (predictor.Predict(instance));
     }
-    
+    /**
+     * method to predict the value of given set of instances
+     * @param instances double 2-d array of attribute values
+     * @return Pair array of predicted value and confidenc
+     * @throws IOException
+     */
     private static  Pair[] PredictInstances(double[][] instances)throws IOException{
         
         Pair[] predictions = new Pair[instances.length];
-        int recNo = m_Data.Size();
-        m_TrainingSet = new Instance[recNo];
-        
-        //ReadData(m_DataFilePath);
-        
-        
-        for (int i=0; i<recNo; i++){
-            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
-            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
-        }
+//        int recNo = m_Data.Size();
+//        m_TrainingSet = new Instance[recNo];
+//        
+//        //ReadData(m_DataFilePath);
+//        
+//        
+//        for (int i=0; i<recNo; i++){
+//            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
+//            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
+//        }
         
         String[] ClassArray = m_Data.ClassArray();
         AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
@@ -271,7 +331,8 @@ public class OptimizeKNN {
         k = paramReader.ReadK();
         simMeas.SetWeights(m_Weights);
                 
-        Predictor predictor = new Predictor1(simMeas, m_TrainingSet);
+        //Predictor predictor = new Predictor1(simMeas, m_TrainingSet);
+        Predictor predictor=CreatePredictor(m_task, m_predictorType, simMeas);
         predictor.setClassList(ClassArray);
         predictor.setK(k);
 
@@ -283,16 +344,15 @@ public class OptimizeKNN {
  private static  Pair[] PredictInstanceskdtree(double[][] instances)throws IOException{
         
         Pair[] predictions = new Pair[instances.length];
-        int recNo = m_Data.Size();
-        m_TrainingSet = new Instance[recNo];
-        
-        //ReadData(m_DataFilePath);
-        
-        
-        for (int i=0; i<recNo; i++){
-            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
-            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
-        }
+//        int recNo = m_Data.Size();
+//        m_TrainingSet = new Instance[recNo];
+//        //ReadData(m_DataFilePath);
+//        
+//        
+//        for (int i=0; i<recNo; i++){
+//            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
+//            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
+//        }
         
         String[] ClassArray = m_Data.ClassArray();
         AbstractSimilarity simMeas = new BasicSimilarity(m_Attributes);
@@ -301,8 +361,8 @@ public class OptimizeKNN {
         m_Weights = paramReader.ReadWeights();
         k = paramReader.ReadK();
         simMeas.SetWeights(m_Weights);
-                
-        Predictor predictor = new PredictorKdtree(m_Data,m_Weights);
+        Predictor predictor=CreatePredictor(m_task, m_predictorType, simMeas);
+        //Predictor predictor = new PredictorKdtree(m_Data,simMeas);
         predictor.setClassList(ClassArray);
         predictor.setK(k);
 
@@ -312,6 +372,9 @@ public class OptimizeKNN {
         return predictions;
     }
     
+ /**
+  * method to divide the training data into two sets traning and test for the optimizing
+  */
     private static void createTrainingdataSets(){
     	int DataSize = m_Data.Size();
     	int TrainSize = (DataSize/3) * 2 + (DataSize % 3);
@@ -354,10 +417,64 @@ public class OptimizeKNN {
     
     }
     
+    /**
+     * method to get the Predictor according to the type (normal or kdtree) of the predictor  and task (optimizing:o or predicting:p)
+     * user request
+     * @param task
+     * @param type
+     * @param simMeas
+     * @return predictor 
+     */
+    protected static Predictor CreatePredictor(String task,String type,AbstractSimilarity simMeas){
+    	Predictor predictor=null;
+    	if(type==NORMAL_PREDICTOR){
+    		if(task=="p"){
+    			 int recNo = m_Data.Size();
+    		        m_TrainingSet = new Instance[recNo];
+    		        //ReadData(m_DataFilePath);
+    		        
+    		        
+    		        for (int i=0; i<recNo; i++){
+    		            m_TrainingSet[i] = new Instance(m_Data.DataSet()[i]);
+    		            m_TrainingSet[i].SetClassIndex(m_Data.ClassIdList()[i]);
+    		        }
+    		}
+    		predictor = new Predictor1(simMeas, m_TrainingSet);
+    		
+    	}
+    	else if(type==KDTREE_PREDICTOR)
+    		
+    		if(task=="o"){
+    			Instances inst=new Instances(m_className, m_Attributes);
+    			int recNo=m_TrainingSet.length;
+    			for(int i=0;i<recNo;i++){
+    				inst.AddElement(i, m_TrainingSet[i].GetElements(), m_TrainingSet[i].GetClassIndex());
+    			}
+    			predictor=new PredictorKdtree(inst, simMeas);
+    			
+    		}
+    		else
+    		predictor = new PredictorKdtree(m_Data, simMeas);
+		return predictor;
+    	
+    }
+    
     protected static void ParseArguments(String[] argv){
         int len = argv.length;
         int i;
- 
+        /*set the default value for parameter file*/
+        String parameterFileName = m_DataFilePath;
+        int j = parameterFileName.lastIndexOf(ArffFileReader.FILE_EXTENSION);
+        if(j!=-1)
+        parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,ArffFileReader.FILE_EXTENSION);
+        else{
+        	 parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,CsvFileReader.FILE_EXTENSION);
+        	 j = parameterFileName.lastIndexOf(CsvFileReader.FILE_EXTENSION);
+        }
+        	
+        parameterFileName = parameterFileName.substring(0, j).concat(ParameterWriter.FILE_EXTENSION);
+        m_ParameterFile=parameterFileName;
+       
         /* parse the options */
         for (i=0; i<len; i++)
 	{
@@ -420,21 +537,23 @@ public class OptimizeKNN {
         }
     }
     
+       
     public static void main(String[] args) {
         // TODO code application logic here
         ParseArguments(args);
-        m_ParameterFile="abalone_training.prm";
-        m_task="t";
+       // m_ParameterFile="abalone_training.prm";
+        m_task="o";
         try 
         {
         	//o :optimizing the k value and the weight values
-        	//t :training data
+        	//p :predicting data
             if (m_task.equals("o"))
             {
             	System.out.println("Read training data");
                 ReadData(m_DataFilePath);
                 createTrainingdataSets();
                 System.out.println("optimizing knn");
+                m_predictorType=KDTREE_PREDICTOR;
                 runOptimization();
             }
             else
@@ -455,8 +574,8 @@ public class OptimizeKNN {
                 
                 
                 startTime = System.nanoTime();
-                
-               predictions = PredictInstanceskdtree(testSet);
+                m_predictorType=KDTREE_PREDICTOR;
+               predictions = PredictInstances(testSet);
                 endTime = System.nanoTime();
 
                 long duration2 = endTime - startTime;
