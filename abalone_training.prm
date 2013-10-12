@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <parameters>
 <weights>
-<Length>8.84598716346629</Length>
-<Diameter>0.4035090028153432</Diameter>
-<Height>6.944786785599933</Height>
-<Whole_weight>8.863246664111827</Whole_weight>
-<Shucked_weight>9.014282245365777</Shucked_weight>
-<Viscera_weight>5.355926160185459</Viscera_weight>
-<Shell_weight>3.4033373769372988</Shell_weight>
-<Rings>2.9913670725659616</Rings>
+<Length>8.637550581800372</Length>
+<Diameter>6.730612002047813</Diameter>
+<Height>2.09224025515368</Height>
+<Whole_weight>4.687199848591696</Whole_weight>
+<Shucked_weight>7.343880345581992</Shucked_weight>
+<Viscera_weight>5.4928487388846925</Viscera_weight>
+<Shell_weight>3.307272469010921</Shell_weight>
+<Rings>5.845590717654656</Rings>
 </weights>
 <k>
-<value>1</value>
+<value>2</value>
 </k>
 </parameters>

@@ -12,6 +12,7 @@ import gaknn.core.Instance;
 import gaknn.core.Instances;
 import gaknn.core.Pair;
 import gaknn.dataaccess.ArffFileReader;
+import gaknn.dataaccess.CsvFileReader;
 import gaknn.dataaccess.DataAccesser;
 import gaknn.dataaccess.ParameterReader;
 import gaknn.dataaccess.ParameterWriter;
@@ -33,6 +34,8 @@ import org.jgap.impl.MutationOperator;
 
 /**
  * class implement the usage of knn algorithm and optimizing weight values
+ * run the knn algorithm with  genetic algorithm of jgap framework and optimized the k value and weight values for each attribute 
+ * use the optimized values to predict the test data class values
  * @author Thimal
  *
  */
@@ -71,6 +74,10 @@ public class KNNPredictor {
 	    public final static String KDTREE_PREDICTOR= "kdtree";
 	    private static String m_predictorType=NORMAL_PREDICTOR;
 	    
+	    
+	    /**
+	     * string to keep the classifier model either regression or classifier
+	     */
 	    private static String m_PredictorModel=Gaknn.CLASSIFIER_M;
 	    
 	    private DataAccesser m_DataAccesser ;
@@ -78,7 +85,11 @@ public class KNNPredictor {
 	    public KNNPredictor(){
 	    	
 	    }
-	    
+	   
+	    /** 
+	     * method to set the training instances data set to the predictor
+	     * @param data
+	     */
 	    public void setData(Instances data){
 	    	m_Data=data;
 	    	m_Attributes=m_Data.Attributes();
@@ -106,7 +117,7 @@ public class KNNPredictor {
     }
     
     /**
-     * method to divide the training data into two sets traning and test for the optimizing
+     * method to divide the training data into two sets training and test for the optimizing
      */
        public void createTrainingdataSets(){
        	int DataSize = m_Data.Size();
@@ -191,6 +202,24 @@ public class KNNPredictor {
       	
       }
       
+     protected String getExtensionRemovedPath(String filePath){
+    	  String parameterFileName = filePath;
+          parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,ArffFileReader.FILE_EXTENSION);
+          int arff = parameterFileName.lastIndexOf(ArffFileReader.FILE_EXTENSION);
+          int csv=parameterFileName.lastIndexOf(CsvFileReader.FILE_EXTENSION);
+          
+          
+          int end=-1;
+          if(arff>csv)
+        	  end=arff;
+          else
+        	  end=csv;
+          if(end==-1)
+        	  end=parameterFileName.length();
+          parameterFileName = parameterFileName.substring(0, end-1);
+          return parameterFileName;
+      }
+      
       /**
        * 
        *  need 
@@ -217,10 +246,9 @@ public class KNNPredictor {
         int len = argv.length;
         int i;
         /*set the default value for parameter file*/
-        String parameterFileName = m_DataFilePath;
-        parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,ArffFileReader.FILE_EXTENSION);
-        int j = parameterFileName.lastIndexOf(ArffFileReader.FILE_EXTENSION);
-        parameterFileName = parameterFileName.substring(0, j).concat(ParameterWriter.FILE_EXTENSION);
+        String parameterFileName = getExtensionRemovedPath(m_DataFilePath);
+        parameterFileName=parameterFileName.concat(".");
+        parameterFileName = parameterFileName.concat(ParameterWriter.FILE_EXTENSION);
         m_ParameterFile=parameterFileName;
         /* parse the options */
         for (i=0; i<len; i++)
@@ -395,8 +423,8 @@ public class KNNPredictor {
         
         String parameterFileName = m_DataFilePath;
         parameterFileName.replaceFirst(ParameterWriter.FILE_EXTENSION,ArffFileReader.FILE_EXTENSION);
-        int i = parameterFileName.lastIndexOf(ArffFileReader.FILE_EXTENSION);
-        parameterFileName = parameterFileName.substring(0, i).concat(ParameterWriter.FILE_EXTENSION);
+        parameterFileName=getExtensionRemovedPath(parameterFileName);
+        parameterFileName = parameterFileName.concat("."+ParameterWriter.FILE_EXTENSION);
         //parameterFileName.replaceAll(ArffFileReader.FILE_EXTENSION,ParameterWriter.FILE_EXTENSION);
         ParameterWriter pWriter = new ParameterWriter(m_Attributes, parameterFileName);
         pWriter.Write(weights, k);
@@ -459,6 +487,8 @@ public class KNNPredictor {
 
       return (predictor.Predict(instance));
   }
+  
+ 
   public DataAccesser getDataAccesser(){
 	  return m_DataAccesser;
   }

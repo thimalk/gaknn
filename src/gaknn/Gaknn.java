@@ -13,6 +13,7 @@ import gaknn.predictor.KNNPredictor;
 
 /**
  * class genetic algorithm optimized k nearest neighbor algorithm
+ * 
  * need to supply arguments
  *  
  * data file path 
@@ -52,9 +53,9 @@ public class Gaknn {
 	static KNNPredictor knn;
 	
 	
-	private static String m_DataFilePath="train.csv";;
+	private static String m_DataFilePath="train.csv";
 	private static String m_task="o";
-	private static String m_TestFilePath="abalone_test.arff";;
+	private static String m_TestFilePath="test.csv";
 	private static String m_className;
 	private static Instances m_Data;
 	private static String m_PredictorModel=CLASSIFIER_M;
@@ -74,6 +75,10 @@ public class Gaknn {
       
       }
       
+      /**
+       * method to get the string of arguments and assign them to variables
+       * @param argv
+       */
 	 public static void ParseArguments(String[] argv){
 	        int len = argv.length;
 	        

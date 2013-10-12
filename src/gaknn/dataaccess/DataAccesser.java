@@ -46,6 +46,12 @@ public class DataAccesser {
 
     	
     }
+    /**
+     * method to read the training dataset from csv or arff file and input to the Instances data structure 
+     * @param filePath
+     * @returnn Instances of data set
+     * @throws IOException
+     */
 	public Instances ReadData(String filePath) throws IOException{
 		Instances m_Data=null;
 	        try
@@ -89,6 +95,12 @@ public class DataAccesser {
 	        
 	    }
 	    
+	/**
+	 * method to read test data set and return the attribute values in 2-D double array
+	 * @param testfile
+	 * @return return 2-D double array of attribute values
+	 * @throws IOException
+	 */
 	    public double[][] ReadTestData(String testfile)throws IOException{
 	        if (testfile.length()==0) throw new IOException("Missing file name");
 	        
@@ -121,12 +133,25 @@ public class DataAccesser {
 	    	dataFileReader = null;
 	        return testdata.DataSet();
 	    }
+	    
+	    /**
+	     * method to set the attribute index of class value(class need to predict)
+	     * @param classAttibuteIndex
+	     */
 	    public void setClassAttibuteIndex(int classAttibuteIndex){
 	    	m_ClassAttribIndex=classAttibuteIndex;
 	    }
+	    /**
+	     * method to get the class name of the attribute name need to predict
+	     * @return String name of class attribute
+	     */
 	    public String getClassName(){
 	    	return m_className;
 	    }
+	    /**
+	     * method to get the set of attributes
+	     * @return FastVector of set of attributes
+	     */
 	    public FastVector getAttibutes(){
 	    	return m_Attributes;
 	    }
